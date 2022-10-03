@@ -6,6 +6,9 @@ TagManager:
   tags:
   - wall
   - goal
+  - Table
+  - TablePackage
+  - Agent
   layers:
   - Default
   - TransparentFX
