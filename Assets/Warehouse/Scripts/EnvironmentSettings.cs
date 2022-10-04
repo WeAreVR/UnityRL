@@ -11,6 +11,6 @@ public class EnvironmentSettings : MonoBehaviour
     public float agentRotationSpeed;
 
     //Number of tables that should spawn
-    public int numberOfTables;
+    public int numberOfTables = 1;
 
 }

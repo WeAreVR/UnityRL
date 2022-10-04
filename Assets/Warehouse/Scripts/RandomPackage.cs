@@ -10,12 +10,10 @@ public class RandomPackage : MonoBehaviour
 
     void Start()
     {
-        //Need to be placed under Resources/ "Will find a workaround
+        //Need to be placed under Resources/ "Will try to find a workaround
         randomMaterials = Resources.LoadAll("Materials", typeof(Material)).Cast<Material>().ToArray();
 
-
         //Assign random color to object will later add so each is a different package
-        //gameObject.GetComponent<MeshRenderer>().material = randomMaterials[Random.Range(0, randomMaterials.Length)];
         ChangeMaterial(randomMaterials[Random.Range(0, randomMaterials.Length)]);
         
     }
@@ -24,7 +22,7 @@ public class RandomPackage : MonoBehaviour
     {
         Renderer[] children;
         children = GetComponentsInChildren<Renderer>();
-        foreach (Renderer rend in children)
+        foreach (Renderer rend in children) 
         {
             var mats = new Material[rend.materials.Length];
             for (var j = 0; j < rend.materials.Length; j++)

@@ -12,6 +12,8 @@ public class AgentMover : Agent
     private Rigidbody m_AgentRb;
     public bool gotPackage = false;
     private EnvironmentSettings m_EnvironmentSettings;
+    [SerializeField] private GameObject setActivatePackage;
+    public int whichPackage;
 
 
     public override void Initialize()
@@ -77,12 +79,13 @@ public class AgentMover : Agent
 
             EndEpisode();
         }
-        if (other.tag == "TablePackage" || gotPackage == false)
+        if (other.tag == "TablePackage" && gotPackage == false)
         {
             Debug.Log("aflevere din pakke");
             AddReward(1f);
             gotPackage = true;
-            
+            setActivatePackage.SetActive(true);
+            whichPackage = other.GetComponent<SpawnPackage>().packageNumber;
         }
 
 
