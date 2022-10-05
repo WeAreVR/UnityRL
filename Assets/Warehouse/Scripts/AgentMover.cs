@@ -14,6 +14,7 @@ public class AgentMover : Agent
     private EnvironmentSettings m_EnvironmentSettings;
     [SerializeField] private GameObject setActivatePackage;
     public int whichPackage;
+    public GameObject tableTargetPrefab;
 
 
     public override void Initialize()
@@ -26,7 +27,6 @@ public class AgentMover : Agent
 
     public override void OnEpisodeBegin()
     {
-        Debug.Log("starting1");
         //Vector3 reset = gameObject.transform.position;
         // transform.localPosition = new Vector3(Random.Range(-2f, +6f), 0, Random.Range(0, +2f));
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
@@ -67,10 +67,12 @@ public class AgentMover : Agent
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "goal")
+        if (other.tag == "Table" && gotPackage == true)
         {
             SetReward(1f);
+            other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
             EndEpisode();
+
         }
 
         if (other.tag == "wall" || other.tag == "agent")
@@ -81,11 +83,13 @@ public class AgentMover : Agent
         }
         if (other.tag == "TablePackage" && gotPackage == false)
         {
+            tableTargetPrefab = other.gameObject;
             Debug.Log("aflevere din pakke");
             AddReward(1f);
             gotPackage = true;
             setActivatePackage.SetActive(true);
-            whichPackage = other.GetComponent<SpawnPackage>().packageNumber;
+            //test om den her også virker på SpawnPackage
+            whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
         }
 
 

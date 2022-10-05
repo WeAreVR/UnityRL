@@ -13,4 +13,6 @@ public class EnvironmentSettings : MonoBehaviour
     //Number of tables that should spawn
     public int numberOfTables = 1;
 
+    //Number of agents that should spawn
+    public int numberOfAgents = 1;
 }

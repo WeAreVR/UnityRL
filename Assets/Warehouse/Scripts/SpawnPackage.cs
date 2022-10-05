@@ -10,8 +10,6 @@ public class SpawnPackage : TableCollisonCheck
     [SerializeField] GameObject myPrefab;
     public GameObject tableSpawned;
     public Material[] randomMaterials;
-    public int packageNumber;
-
     void Start()
     {
 
@@ -23,30 +21,24 @@ public class SpawnPackage : TableCollisonCheck
         int randomNumberMaterial = packageNumber = Random.Range(0, randomMaterials.Length);
 
         //Assign random color to object will later add so each is a different package
-        ChangeMaterial(randomMaterials[randomNumberMaterial],gameObject);
-        ChangeMaterial(randomMaterials[randomNumberMaterial],tableSpawned); 
+        ChangeMaterial(randomMaterials[randomNumberMaterial],gameObject,packageNumber);
+        ChangeMaterial(randomMaterials[randomNumberMaterial],tableSpawned,packageNumber); 
 
 
     }
 
-    void ItemDelivered()
+    public void ItemDelivered(GameObject obj)
     {
-        Destroy(tableSpawned);
+        Destroy(obj);
         Destroy(gameObject);
         
     }
-     void Update()
-    {
-        if (Input.GetKeyDown("space"))
-        {
-            ItemDelivered();
-        }
-    }
 
 
-    void ChangeMaterial(Material newMat,GameObject obj)
+    void ChangeMaterial(Material newMat,GameObject obj,int number)
     {
         Renderer[] children;
+        obj.GetComponent<TableCollisonCheck>().packageNumber = number;
         children = obj.GetComponentsInChildren<Renderer>();
         foreach (Renderer rend in children)
         {

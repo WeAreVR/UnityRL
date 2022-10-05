@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class RandomPackage : MonoBehaviour
 {
+
+    //script bruges ikke mere rykkede den over i spawnPackage indtilvidere rykker måske tilbage
     // Start is called before the first frame update
     public Material[] randomMaterials;
 

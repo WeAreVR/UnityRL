@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class TableCollisonCheck : MonoBehaviour
 {
+    //rename class
     private GameObject obj;
-    
-       void OnTriggerEnter(Collider other)
+    public int packageNumber;
+
+
+    void OnTriggerEnter(Collider other)
       {
 
           if (other.gameObject.tag == "Table" || other.gameObject.tag == "TablePackage")
