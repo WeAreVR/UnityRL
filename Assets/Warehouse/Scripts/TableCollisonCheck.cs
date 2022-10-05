@@ -7,6 +7,8 @@ public class TableCollisonCheck : MonoBehaviour
     //rename class
     private GameObject obj;
     public int packageNumber;
+    public Material[] randomMaterials;
+
 
 
     void OnTriggerEnter(Collider other)

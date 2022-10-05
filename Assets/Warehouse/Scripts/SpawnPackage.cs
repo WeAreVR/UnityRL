@@ -9,7 +9,6 @@ public class SpawnPackage : TableCollisonCheck
 
     [SerializeField] GameObject myPrefab;
     public GameObject tableSpawned;
-    public Material[] randomMaterials;
     void Start()
     {
 

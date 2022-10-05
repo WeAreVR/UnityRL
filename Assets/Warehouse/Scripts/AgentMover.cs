@@ -13,9 +13,9 @@ public class AgentMover : Agent
     public bool gotPackage = false;
     private EnvironmentSettings m_EnvironmentSettings;
     [SerializeField] private GameObject setActivatePackage;
-    public int whichPackage;
+    public int? whichPackage;
     public GameObject tableTargetPrefab;
-
+    public Material changeMaterial;
 
     public override void Initialize()
     {
@@ -69,27 +69,43 @@ public class AgentMover : Agent
     {
         if (other.tag == "Table" && gotPackage == true)
         {
-            SetReward(1f);
-            other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
-            EndEpisode();
+            if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
+            {
+                SetReward(1f);
+                whichPackage = null;
+                other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
+                gotPackage = false;
+                setActivatePackage.SetActive(false);
+
+                EndEpisode();
+            }
 
         }
 
         if (other.tag == "wall" || other.tag == "agent")
         {
             AddReward(-1f);
-
             EndEpisode();
         }
         if (other.tag == "TablePackage" && gotPackage == false)
         {
+
             tableTargetPrefab = other.gameObject;
-            Debug.Log("aflevere din pakke");
             AddReward(1f);
-            gotPackage = true;
             setActivatePackage.SetActive(true);
-            //test om den her også virker på SpawnPackage
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
+
+
+            //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
+            //super trashy måde at gøre det på føler jeg men det virker
+            GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
+            changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
+
+
+            gotPackage = true;
+            setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
+
+
         }
 
 
