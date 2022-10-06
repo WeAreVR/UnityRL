@@ -171,6 +171,7 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5782669363573354585, guid: c03f1372ab5fa4f4bbc33421c788b90d, type: 3}
     - {fileID: 1108234693500342910, guid: c03f1372ab5fa4f4bbc33421c788b90d, type: 3}
+    - {fileID: 7899911674709485689, guid: c03f1372ab5fa4f4bbc33421c788b90d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c03f1372ab5fa4f4bbc33421c788b90d, type: 3}
 --- !u!4 &3607503551008980497 stripped
 Transform:
@@ -194,3 +195,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf29c135ef7a024c95cd5768dfd40e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  packageNumber: 0
+  randomMaterials: []

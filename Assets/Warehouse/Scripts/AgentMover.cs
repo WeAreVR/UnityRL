@@ -7,18 +7,20 @@ using Unity.MLAgents.Sensors;
 
 public class AgentMover : Agent
 {
-    [SerializeField] private Transform targetTransform;
+    [SerializeField] private Transform[] targetTransform;
+    [SerializeField] private Transform[] otherTargetTransform;
     //skal vi bruge rigidbody til at bevæge os eller bare ændre position
     private Rigidbody m_AgentRb;
     public bool gotPackage = false;
     private EnvironmentSettings m_EnvironmentSettings;
     [SerializeField] private GameObject setActivatePackage;
-    public int? whichPackage;
+    public int whichPackage;
     public GameObject tableTargetPrefab;
     public Material changeMaterial;
 
     public override void Initialize()
     {
+        targetTransform = 
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
@@ -30,13 +32,12 @@ public class AgentMover : Agent
         //Vector3 reset = gameObject.transform.position;
         // transform.localPosition = new Vector3(Random.Range(-2f, +6f), 0, Random.Range(0, +2f));
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
-        targetTransform.localPosition = new Vector3(0, 2, -2);
+        //targetTransform.localPosition = new Vector3(0, 2, -2);
 
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        //sensor.AddObservation(transform.localPosition);
-        //sensor.AddObservation(targetTransform.localPosition);
+        sensor.AddObservation(whichPackage);
 
     }
 
@@ -72,7 +73,7 @@ public class AgentMover : Agent
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
                 SetReward(1f);
-                whichPackage = null;
+                whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);

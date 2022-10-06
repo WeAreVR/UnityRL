@@ -322,6 +322,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3011452863660538778, guid: 9b26951a99db6614c901e21d5d68ed94, type: 3}
+      propertyPath: otherTargetTransform
+      value: 
+      objectReference: {fileID: 4635888523674366018, guid: c03f1372ab5fa4f4bbc33421c788b90d, type: 3}
+    - target: {fileID: 5324121243899657392, guid: 9b26951a99db6614c901e21d5d68ed94, type: 3}
+      propertyPath: m_BehaviorType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5324121243899657394, guid: 9b26951a99db6614c901e21d5d68ed94, type: 3}
       propertyPath: m_Name
       value: Agent
@@ -370,7 +378,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6929281143473404667, guid: 9b26951a99db6614c901e21d5d68ed94, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9b26951a99db6614c901e21d5d68ed94, type: 3}
 --- !u!1001 &5562417938627727886
 PrefabInstance:
@@ -429,7 +438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5562417937860664207, guid: 308529fbb3a2c8245be167a3e34444b9, type: 3}
       propertyPath: numberOfTables
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 308529fbb3a2c8245be167a3e34444b9, type: 3}

@@ -9,7 +9,7 @@ public class SpawnPackage : TableCollisonCheck
 
     [SerializeField] GameObject myPrefab;
     public GameObject tableSpawned;
-    void Start()
+    void Awake()
     {
 
         tableSpawned = Instantiate(myPrefab, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.identity);
