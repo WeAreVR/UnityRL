@@ -9,10 +9,11 @@ public class AgentMover : Agent
 {
     [SerializeField] private Transform[] targetTransform;
     [SerializeField] private Transform[] otherTargetTransform;
-    //skal vi bruge rigidbody til at bevæge os eller bare ændre position
+    //skal vi bruge rigidbody til at bevï¿½ge os eller bare ï¿½ndre position
     private Rigidbody m_AgentRb;
     public bool gotPackage = false;
     private EnvironmentSettings m_EnvironmentSettings;
+    private SpawnTable m_SpawnTable;
     [SerializeField] private GameObject setActivatePackage;
     public int whichPackage;
     public GameObject tableTargetPrefab;
@@ -20,12 +21,17 @@ public class AgentMover : Agent
 
     public override void Initialize()
     {
-        targetTransform = 
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
-
+        m_SpawnTable = FindObjectOfType<SpawnTable>();
+        foreach (GameObject table in m_SpawnPackage)
+        {
+          Debug.Log(table);
+        }
     }
+
+    
 
     public override void OnEpisodeBegin()
     {
@@ -38,6 +44,12 @@ public class AgentMover : Agent
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(whichPackage);
+        foreach (var table in m_SpawnTable.tables)
+        {
+            sensor.AddObservation(table);
+        }
+        
+
 
     }
 
@@ -98,7 +110,7 @@ public class AgentMover : Agent
 
 
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
-            //super trashy måde at gøre det på føler jeg men det virker
+            //super trashy mï¿½de at gï¿½re det pï¿½ fï¿½ler jeg men det virker
             GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
 
@@ -118,7 +130,7 @@ public class AgentMover : Agent
 
         var action = act[0];
 
-        //testede det her og det virkede ikke særlig godt, men det ville nok være det rigtige at bruge se om vi kan gøre bedre
+        //testede det her og det virkede ikke sï¿½rlig godt, men det ville nok vï¿½re det rigtige at bruge se om vi kan gï¿½re bedre
         switch (action)
         {
             case 1:

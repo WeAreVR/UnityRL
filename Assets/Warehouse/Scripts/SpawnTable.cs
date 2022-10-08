@@ -6,6 +6,12 @@ public class SpawnTable : MonoBehaviour
 {
     private EnvironmentSettings m_EnvironmentSettings;
     [SerializeField] GameObject table;
+
+    public List<GameObject> tables = new List<GameObject>();
+
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -13,7 +19,7 @@ public class SpawnTable : MonoBehaviour
 
         for(int i = 0; i < m_EnvironmentSettings.numberOfTables; i++)
         {
-            Instantiate(table, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.identity);
+            tables.Add(Instantiate(table, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.identity));           
 
         }
 
