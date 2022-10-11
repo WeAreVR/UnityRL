@@ -15,17 +15,20 @@ public class AgentMover : Agent
     private EnvironmentSettings m_EnvironmentSettings;
     private SpawnTable m_SpawnTable;
     [SerializeField] private GameObject setActivatePackage;
-    public int whichPackage;
+    public int whichPackage = 1;
     public GameObject tableTargetPrefab;
     public Material changeMaterial;
-
+    private List<GameObject> listOfTables = new List<GameObject>();
     public override void Initialize()
     {
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_SpawnTable = FindObjectOfType<SpawnTable>();
-        foreach (GameObject table in m_SpawnPackage)
+        GameObject settings = GameObject.Find("EnvironmentSettings");
+
+        listOfTables = settings.GetComponent<SpawnTable>().tables;
+        foreach (GameObject table in listOfTables)
         {
           Debug.Log(table);
         }
@@ -43,15 +46,17 @@ public class AgentMover : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(whichPackage);
-        foreach (var table in m_SpawnTable.tables)
+        //sensor.AddObservation(whichPackage);
+        foreach (var table in listOfTables)
         {
-            sensor.AddObservation(table);
+            Debug.Log(table.transform.position);
+            sensor.AddObservation(table.transform.position);
         }
         
 
 
     }
+    
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
