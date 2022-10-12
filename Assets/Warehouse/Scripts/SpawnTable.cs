@@ -13,17 +13,14 @@ public class SpawnTable : MonoBehaviour
     
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
 
         for(int i = 0; i < m_EnvironmentSettings.numberOfTables; i++)
         {
-            tables.Add(Instantiate(table, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.identity));           
+            tables.Add(Instantiate(table, new Vector3(Random.Range(0f, 50f), 0, Random.Range(0f, 50f)), Quaternion.identity));           
 
         }
-
     }
-
-
 }

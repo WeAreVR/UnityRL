@@ -7,18 +7,21 @@ using Unity.MLAgents.Sensors;
 
 public class AgentMover : Agent
 {
-    [SerializeField] private Transform[] targetTransform;
-    [SerializeField] private Transform[] otherTargetTransform;
-    //skal vi bruge rigidbody til at bev�ge os eller bare �ndre position
+ 
     private Rigidbody m_AgentRb;
-    public bool gotPackage = false;
     private EnvironmentSettings m_EnvironmentSettings;
     private SpawnTable m_SpawnTable;
-    [SerializeField] private GameObject setActivatePackage;
-    public int whichPackage = 1;
+
+    [SerializeField] private GameObject setActivatePackage;    
+    public bool gotPackage;
+    public int whichPackage;
+
     public GameObject tableTargetPrefab;
     public Material changeMaterial;
     private List<GameObject> listOfTables = new List<GameObject>();
+
+    BufferSensorComponent m_BufferSensor;
+
     public override void Initialize()
     {
         m_AgentRb = GetComponent<Rigidbody>();
@@ -26,15 +29,13 @@ public class AgentMover : Agent
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_SpawnTable = FindObjectOfType<SpawnTable>();
         GameObject settings = GameObject.Find("EnvironmentSettings");
-
+        m_BufferSensor = GetComponent<BufferSensorComponent>();
         listOfTables = settings.GetComponent<SpawnTable>().tables;
-        foreach (GameObject table in listOfTables)
-        {
-          Debug.Log(table);
-        }
+        
     }
 
-    
+
+
 
     public override void OnEpisodeBegin()
     {
@@ -42,21 +43,24 @@ public class AgentMover : Agent
         // transform.localPosition = new Vector3(Random.Range(-2f, +6f), 0, Random.Range(0, +2f));
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
         //targetTransform.localPosition = new Vector3(0, 2, -2);
+        gotPackage = false;
 
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        //sensor.AddObservation(whichPackage);
+        
+       sensor.AddObservation(gotPackage);
+        
+        sensor.AddObservation(whichPackage);
+
         foreach (var table in listOfTables)
         {
-            Debug.Log(table.transform.position);
             sensor.AddObservation(table.transform.position);
+
+            sensor.AddObservation(table.GetComponent<SpawnPackage>().tableSpawned.transform.position);
         }
-        
-
-
     }
-    
+
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
@@ -85,19 +89,18 @@ public class AgentMover : Agent
     }
     private void OnTriggerEnter(Collider other)
     {
+        //Table that the package
         if (other.tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
-                SetReward(1f);
+                AddReward(1f);
                 whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
-
                 EndEpisode();
             }
-
         }
 
         if (other.tag == "wall" || other.tag == "agent")
@@ -105,21 +108,17 @@ public class AgentMover : Agent
             AddReward(-1f);
             EndEpisode();
         }
+
         if (other.tag == "TablePackage" && gotPackage == false)
         {
-
             tableTargetPrefab = other.gameObject;
             AddReward(1f);
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
-
-
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
             //super trashy m�de at g�re det p� f�ler jeg men det virker
             GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
-
-
             gotPackage = true;
             setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
 
