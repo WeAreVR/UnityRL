@@ -23,10 +23,10 @@ public class SpawnPackage : TableCollisonCheck
         ChangeMaterial(randomMaterials[randomNumberMaterial],tableSpawned,packageNumber);
     }
 
-    public void ItemDelivered(GameObject obj)
+    public void ItemDelivered(GameObject obj1)
     {
-        Destroy(obj);
         Destroy(gameObject);
+        Destroy(obj1);
         
     }
 

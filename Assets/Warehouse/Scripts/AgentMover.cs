@@ -4,43 +4,62 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Policies;
 
 public class AgentMover : Agent
 {
- 
     private Rigidbody m_AgentRb;
     private EnvironmentSettings m_EnvironmentSettings;
+    private BehaviorParameters m_BehaviorParameters;
     private SpawnTable m_SpawnTable;
 
     [SerializeField] private GameObject setActivatePackage;    
+
+
     public bool gotPackage;
     public int whichPackage;
+    private int numberOfVectorsInTablesWithPair;
 
     public GameObject tableTargetPrefab;
     public Material changeMaterial;
     private List<GameObject> listOfTables = new List<GameObject>();
-
-    BufferSensorComponent m_BufferSensor;
+    private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
 
     public override void Initialize()
     {
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
+        m_BehaviorParameters = FindObjectOfType<BehaviorParameters>();
         m_SpawnTable = FindObjectOfType<SpawnTable>();
         GameObject settings = GameObject.Find("EnvironmentSettings");
-        m_BufferSensor = GetComponent<BufferSensorComponent>();
         listOfTables = settings.GetComponent<SpawnTable>().tables;
+
+        //Get back with smart way to do this
+        //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
+
+        numberOfVectorsInTablesWithPair = listOfTables.Count * 6;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 2;
+
         
+            //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
+            Invoke("addToList",0.5f);
+        
+    }
+    void addToList() 
+    { 
+         foreach (GameObject table in listOfTables)
+        { 
+            listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
+        }
     }
 
 
 
 
-    public override void OnEpisodeBegin()
+public override void OnEpisodeBegin()
     {
-        //Vector3 reset = gameObject.transform.position;
-        // transform.localPosition = new Vector3(Random.Range(-2f, +6f), 0, Random.Range(0, +2f));
+        transform.localPosition = new Vector3(UnityEngine.Random.Range(-2f, +6f), 0, UnityEngine.Random.Range(0, +2f));
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
         //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
@@ -48,17 +67,26 @@ public class AgentMover : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        
-       sensor.AddObservation(gotPackage);
+
+
+        sensor.AddObservation(gotPackage);
         
         sensor.AddObservation(whichPackage);
 
+        for(int i = 0; i < listOfTables.Count; i++)
+        {
+
+            sensor.AddObservation(listOfTablesWithPackge[i].transform.position);
+            sensor.AddObservation(listOfTables[i].transform.position);
+        }
+        /*
         foreach (var table in listOfTables)
         {
             sensor.AddObservation(table.transform.position);
 
             sensor.AddObservation(table.GetComponent<SpawnPackage>().tableSpawned.transform.position);
         }
+        */
     }
 
 
@@ -66,6 +94,7 @@ public class AgentMover : Agent
     {
 
         MoveAgent(actionBuffers.DiscreteActions);
+
     }
     public override void Heuristic(in ActionBuffers actionsOut)
     {
@@ -76,6 +105,7 @@ public class AgentMover : Agent
         }
         else if (Input.GetKey(KeyCode.W))
         {
+
             discreteActionsOut[0] = 1;
         }
         else if (Input.GetKey(KeyCode.A))
@@ -94,17 +124,41 @@ public class AgentMover : Agent
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
+
+
                 AddReward(1f);
                 whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
-                other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
+                /*
+                //virker ikke fjener ikke fra liste
+                listOfTablesWithPackge.Remove(other.gameObject);
+                listOfTables.Remove(tableTargetPrefab);
+                */
+                //RemoveAt virker 
+                for (int i = 0; i < listOfTables.Count; i++)
+                {
+                    if (listOfTables[i] == other.gameObject)
+                    {
+                        listOfTables.RemoveAt(i);
+                    }
+                }
+                for (int i = 0; i < listOfTablesWithPackge.Count; i++)
+                {
+                    if (listOfTablesWithPackge[i] == tableTargetPrefab)
+                    {
+                        listOfTablesWithPackge.RemoveAt(i);
+                    }
+
+                }
+
+                 other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
-                EndEpisode();
             }
         }
 
         if (other.tag == "wall" || other.tag == "agent")
         {
+            Debug.Log("bang");
             AddReward(-1f);
             EndEpisode();
         }
@@ -161,6 +215,7 @@ public class AgentMover : Agent
             ForceMode.VelocityChange);
         
     }
+
 
 }
 
