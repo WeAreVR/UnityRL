@@ -24,6 +24,8 @@ public class AgentMover : Agent
     public Material changeMaterial;
     private List<GameObject> listOfTables = new List<GameObject>();
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
+    private GameObject settings;
+    
 
     public override void Initialize()
     {
@@ -32,18 +34,20 @@ public class AgentMover : Agent
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_BehaviorParameters = FindObjectOfType<BehaviorParameters>();
         m_SpawnTable = FindObjectOfType<SpawnTable>();
-        GameObject settings = GameObject.Find("EnvironmentSettings");
-        listOfTables = settings.GetComponent<SpawnTable>().tables;
-
+        settings = GameObject.Find("EnvironmentSettings");
+        //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         //Get back with smart way to do this
         //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
-
-        numberOfVectorsInTablesWithPair = listOfTables.Count * 6;
+        //Overstående er fixed men beholder kommentar fordi vi skal add borde
+        //
+        
+        numberOfVectorsInTablesWithPair = m_EnvironmentSettings.numberOfTables * 4;
         m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 2;
 
-        
-            //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
-            Invoke("addToList",0.5f);
+
+        //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
+        //Delay because it tables are not spawned yet
+        //Invoke("addToList",0.5f);
         
     }
     void addToList() 
@@ -54,12 +58,15 @@ public class AgentMover : Agent
         }
     }
 
-
-
-
-public override void OnEpisodeBegin()
+    public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(UnityEngine.Random.Range(-2f, +6f), 0, UnityEngine.Random.Range(0, +2f));
+       
+        ClearAndDestoryList(listOfTablesWithPackge, listOfTables);
+        m_SpawnTable.SpawnTables();
+        //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
+        listOfTables = settings.GetComponent<SpawnTable>().tables;
+        Invoke("addToList", 0.2f);  
+        transform.localPosition = new Vector3(0,0,0);
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
         //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
@@ -67,17 +74,19 @@ public override void OnEpisodeBegin()
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-
-
         sensor.AddObservation(gotPackage);
-        
         sensor.AddObservation(whichPackage);
 
         for(int i = 0; i < listOfTables.Count; i++)
         {
-
+            /* No need since y is never used i think
             sensor.AddObservation(listOfTablesWithPackge[i].transform.position);
             sensor.AddObservation(listOfTables[i].transform.position);
+            */
+            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
+            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
+            sensor.AddObservation(listOfTables[i].transform.position.x);
+            sensor.AddObservation(listOfTables[i].transform.position.z);
         }
         /*
         foreach (var table in listOfTables)
@@ -119,13 +128,10 @@ public override void OnEpisodeBegin()
     }
     private void OnTriggerEnter(Collider other)
     {
-        //Table that the package
         if (other.tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
-
-
                 AddReward(1f);
                 whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 /*
@@ -134,23 +140,10 @@ public override void OnEpisodeBegin()
                 listOfTables.Remove(tableTargetPrefab);
                 */
                 //RemoveAt virker 
-                for (int i = 0; i < listOfTables.Count; i++)
-                {
-                    if (listOfTables[i] == other.gameObject)
-                    {
-                        listOfTables.RemoveAt(i);
-                    }
-                }
-                for (int i = 0; i < listOfTablesWithPackge.Count; i++)
-                {
-                    if (listOfTablesWithPackge[i] == tableTargetPrefab)
-                    {
-                        listOfTablesWithPackge.RemoveAt(i);
-                    }
+                RemoveFromList(listOfTables, other.gameObject);
+                RemoveFromList(listOfTablesWithPackge, tableTargetPrefab);
 
-                }
-
-                 other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
+                other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
             }
@@ -175,8 +168,6 @@ public override void OnEpisodeBegin()
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
             gotPackage = true;
             setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
-
-
         }
 
 
@@ -215,7 +206,31 @@ public override void OnEpisodeBegin()
             ForceMode.VelocityChange);
         
     }
+    
+    void RemoveFromList(List<GameObject> list,GameObject obj)
+    {
+ 
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] == obj)
+                {
+                    list.RemoveAt(i);
+                    break;
+                }
+            }
+    }
 
 
+    void ClearAndDestoryList(List<GameObject> list, List<GameObject> list2)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            Destroy(list[i]);
+            Destroy(list2[i]);
+        }
+        list.Clear();
+        list2.Clear();
+
+    }
 }
 

@@ -8,12 +8,8 @@ public class SpawnTable : MonoBehaviour
     [SerializeField] GameObject table;
 
     public List<GameObject> tables = new List<GameObject>();
-
-
     
-
-    // Start is called before the first frame update
-    void Awake()
+    public void SpawnTables()
     {
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
 
