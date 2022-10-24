@@ -41,8 +41,9 @@ public class AgentMover : Agent
         //Overstående er fixed men beholder kommentar fordi vi skal add borde
         //
         
+        //3 for transform og 2 for de andre
         numberOfVectorsInTablesWithPair = m_EnvironmentSettings.numberOfTables * 4;
-        m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 2;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 5;
 
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
@@ -60,7 +61,6 @@ public class AgentMover : Agent
 
     public override void OnEpisodeBegin()
     {
-       
         ClearAndDestoryList(listOfTablesWithPackge, listOfTables);
         m_SpawnTable.SpawnTables();
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
@@ -70,16 +70,22 @@ public class AgentMover : Agent
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
         //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
+        whichPackage = -1;
 
     }
     public override void CollectObservations(VectorSensor sensor)
     {
+        //På nuværende tidspunkt ved den ikke hvilke border som har/skal havde de rigtige pakker
+        //Vi skal adde whichPackage fra bordene også men ved ikke hvordan vi gør det på nurværnde tidspunkt, måske bare GetComponent<TableCollisonCheck>().packageNumber;
+        //eller add dem i et dict til at starte med
+        //mlagent sorter kan måske være relevant
+        sensor.AddObservation(transform.localPosition);
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
 
         for(int i = 0; i < listOfTables.Count; i++)
         {
-            /* No need since y is never used i think
+            /* No need for y since it is never used i think
             sensor.AddObservation(listOfTablesWithPackge[i].transform.position);
             sensor.AddObservation(listOfTables[i].transform.position);
             */
@@ -89,6 +95,7 @@ public class AgentMover : Agent
             sensor.AddObservation(listOfTables[i].transform.position.z);
         }
         /*
+        
         foreach (var table in listOfTables)
         {
             sensor.AddObservation(table.transform.position);
@@ -133,7 +140,8 @@ public class AgentMover : Agent
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
                 AddReward(1f);
-                whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
+                //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
+                whichPackage = -1;
                 /*
                 //virker ikke fjener ikke fra liste
                 listOfTablesWithPackge.Remove(other.gameObject);
@@ -142,10 +150,14 @@ public class AgentMover : Agent
                 //RemoveAt virker 
                 RemoveFromList(listOfTables, other.gameObject);
                 RemoveFromList(listOfTablesWithPackge, tableTargetPrefab);
-
+            
                 other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
+                if (listOfTables.Count == 0)
+                {
+                    EndEpisode();
+                }
             }
         }
 
@@ -180,6 +192,7 @@ public class AgentMover : Agent
         var action = act[0];
 
         //testede det her og det virkede ikke s�rlig godt, men det ville nok v�re det rigtige at bruge se om vi kan g�re bedre
+        //skal den kunne rotate up?
         switch (action)
         {
             case 1:
@@ -209,15 +222,14 @@ public class AgentMover : Agent
     
     void RemoveFromList(List<GameObject> list,GameObject obj)
     {
- 
-            for (int i = 0; i < list.Count; i++)
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i] == obj)
             {
-                if (list[i] == obj)
-                {
-                    list.RemoveAt(i);
-                    break;
-                }
+                list.RemoveAt(i);
+                break;
             }
+        }
     }
 
 

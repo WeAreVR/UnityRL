@@ -2,22 +2,22 @@
     "MoveToTables": {
         "checkpoints": [
             {
-                "steps": 13427,
-                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-13427.onnx",
+                "steps": 0,
+                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-0.onnx",
                 "reward": null,
-                "creation_time": 1666425269.7752812,
+                "creation_time": 1666609497.243144,
                 "auxillary_file_paths": [
-                    "results\\ppo\\MoveToTables\\MoveToTables-13427.pt"
+                    "results\\ppo\\MoveToTables\\MoveToTables-0.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 13427,
+            "steps": 0,
             "file_path": "results\\ppo\\MoveToTables.onnx",
             "reward": null,
-            "creation_time": 1666425269.7752812,
+            "creation_time": 1666609497.243144,
             "auxillary_file_paths": [
-                "results\\ppo\\MoveToTables\\MoveToTables-13427.pt"
+                "results\\ppo\\MoveToTables\\MoveToTables-0.pt"
             ]
         }
     },
