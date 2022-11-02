@@ -5,6 +5,8 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Policies;
+using System.Threading;
+using Unity.VisualScripting;
 
 public class AgentMover : Agent
 {
@@ -13,7 +15,7 @@ public class AgentMover : Agent
     private BehaviorParameters m_BehaviorParameters;
     private SpawnTable m_SpawnTable;
 
-    [SerializeField] private GameObject setActivatePackage;    
+    [SerializeField] private GameObject setActivatePackage;
 
 
     public bool gotPackage;
@@ -25,7 +27,13 @@ public class AgentMover : Agent
     private List<GameObject> listOfTables = new List<GameObject>();
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
     private GameObject settings;
-    
+    private bool isColliding = false;
+
+
+     void Update()
+    {
+        isColliding = false;
+    }
 
     public override void Initialize()
     {
@@ -40,7 +48,7 @@ public class AgentMover : Agent
         //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
         //Overstående er fixed men beholder kommentar fordi vi skal add borde
         //
-        
+
         //3 for transform og 2 for de andre
         numberOfVectorsInTablesWithPair = m_EnvironmentSettings.numberOfTables * 4;
         m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 5;
@@ -49,12 +57,12 @@ public class AgentMover : Agent
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
         //Delay because it tables are not spawned yet
         //Invoke("addToList",0.5f);
-        
+
     }
-    void addToList() 
-    { 
-         foreach (GameObject table in listOfTables)
-        { 
+    void addToList()
+    {
+        foreach (GameObject table in listOfTables)
+        {
             listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
         }
     }
@@ -65,12 +73,15 @@ public class AgentMover : Agent
         m_SpawnTable.SpawnTables();
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         listOfTables = settings.GetComponent<SpawnTable>().tables;
-        Invoke("addToList", 0.2f);  
-        transform.localPosition = new Vector3(0,0,0);
+        Invoke("addToList", 0.2f);
+        transform.localPosition = new Vector3(0, 0, 0);
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
         //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
         whichPackage = -1;
+
 
     }
     public override void CollectObservations(VectorSensor sensor)
@@ -83,7 +94,7 @@ public class AgentMover : Agent
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
 
-        for(int i = 0; i < listOfTables.Count; i++)
+        for (int i = 0; i < listOfTables.Count; i++)
         {
             /* No need for y since it is never used i think
             sensor.AddObservation(listOfTablesWithPackge[i].transform.position);
@@ -135,6 +146,10 @@ public class AgentMover : Agent
     }
     private void OnTriggerEnter(Collider other)
     {
+
+        if (isColliding) return;
+        isColliding = true;
+        
         if (other.tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
@@ -150,7 +165,7 @@ public class AgentMover : Agent
                 //RemoveAt virker 
                 RemoveFromList(listOfTables, other.gameObject);
                 RemoveFromList(listOfTablesWithPackge, tableTargetPrefab);
-            
+
                 other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
@@ -163,6 +178,7 @@ public class AgentMover : Agent
 
         if (other.tag == "wall" || other.tag == "agent")
         {
+
             Debug.Log("bang");
             AddReward(-1f);
             EndEpisode();
@@ -186,6 +202,7 @@ public class AgentMover : Agent
     }
     public void MoveAgent(ActionSegment<int> act)
     {
+        
         var dirToGo = Vector3.zero;
         var rotateDir = Vector3.zero;
 
