@@ -17,7 +17,7 @@ public class AgentMover : Agent
 
     [SerializeField] private GameObject setActivatePackage;
 
-
+    [SerializeField] private CharacterController _controller;
     public bool gotPackage;
     public int whichPackage;
     private int numberOfVectorsInTablesWithPair;
@@ -28,7 +28,8 @@ public class AgentMover : Agent
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
     private GameObject settings;
     private bool isColliding = false;
-
+    public int agentSpeed = 1;
+    public GameObject plane;
 
      void Update()
     {
@@ -37,6 +38,8 @@ public class AgentMover : Agent
 
     public override void Initialize()
     {
+
+        _controller = gameObject.GetComponent<CharacterController>();
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
@@ -71,12 +74,16 @@ public class AgentMover : Agent
     {
         ClearAndDestoryList(listOfTablesWithPackge, listOfTables);
         m_SpawnTable.SpawnTables();
+        Debug.Log(plane.transform.localPosition);
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         listOfTables = settings.GetComponent<SpawnTable>().tables;
         Invoke("addToList", 0.2f);
-        transform.localPosition = new Vector3(0, 0, 0);
-        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        _controller.enabled = false;
+        _controller.transform.position = new Vector3(0, 0, 0);
+        _controller.enabled = true;
+        //transform.localPosition = plane.transform.localPosition;
+        //GetComponent<Rigidbody>().velocity = Vector3.zero;
+        //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
         //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
@@ -128,7 +135,7 @@ public class AgentMover : Agent
         var discreteActionsOut = actionsOut.DiscreteActions;
         if (Input.GetKey(KeyCode.D))
         {
-            discreteActionsOut[0] = 3;
+            discreteActionsOut[0] = 5;
         }
         else if (Input.GetKey(KeyCode.W))
         {
@@ -137,7 +144,7 @@ public class AgentMover : Agent
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            discreteActionsOut[0] = 4;
+            discreteActionsOut[0] = 6;
         }
         else if (Input.GetKey(KeyCode.S))
         {
@@ -207,33 +214,38 @@ public class AgentMover : Agent
         var rotateDir = Vector3.zero;
 
         var action = act[0];
-
+        
         //testede det her og det virkede ikke s�rlig godt, men det ville nok v�re det rigtige at bruge se om vi kan g�re bedre
         //skal den kunne rotate up?
         switch (action)
         {
             case 1:
-                dirToGo = transform.forward * 1f;
+                _controller.Move(transform.forward*m_EnvironmentSettings.agentRunSpeed);
+                //dirToGo = transform.forward * 1f;
+                Debug.Log("frem");
                 break;
             case 2:
-                dirToGo = transform.forward * -1f;
+                _controller.Move(transform.forward * (m_EnvironmentSettings.agentRunSpeed * -1));
+                Debug.Log("og tilbag");
                 break;
             case 3:
-                rotateDir = transform.up * 1f;
+                //rotateDir = transform.up * 1f;
                 break;
             case 4:
-                rotateDir = transform.up * -1f;
+                //rotateDir = transform.up * -1f;
                 break;
             case 5:
-                dirToGo = transform.right * -0.75f;
+                _controller.Move(transform.right* m_EnvironmentSettings.agentRunSpeed);
+                Debug.Log("Shiffel to the right");
                 break;
             case 6:
-                dirToGo = transform.right * 0.75f;
+                _controller.Move(transform.right*(m_EnvironmentSettings.agentRunSpeed*-1));
+                Debug.Log("chris rock! chris rock");
                 break;
         }
-        transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);
-        m_AgentRb.AddForce(dirToGo * m_EnvironmentSettings.agentRunSpeed,
-            ForceMode.VelocityChange);
+        //transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);
+        //m_AgentRb.AddForce(dirToGo * m_EnvironmentSettings.agentRunSpeed,
+          //  ForceMode.VelocityChange);
         
     }
     
