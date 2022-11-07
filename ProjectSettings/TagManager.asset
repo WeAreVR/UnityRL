@@ -9,6 +9,16 @@ TagManager:
   - Table
   - TablePackage
   - Agent
+  - Table1
+  - Table2
+  - Table3
+  - Table4
+  - Table5
+  - TablePackage1
+  - TablePackage2
+  - TablePackage3
+  - TablePackage4
+  - TablePackage5
   layers:
   - Default
   - TransparentFX
