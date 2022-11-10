@@ -8,6 +8,7 @@ public class TableCollisonCheck : MonoBehaviour
     private GameObject obj;
     public int packageNumber;
     public Material[] randomMaterials;
+    public GameObject[] shelf;
 
 
 

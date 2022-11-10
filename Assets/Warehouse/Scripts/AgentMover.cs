@@ -40,6 +40,7 @@ public class AgentMover : Agent
     {
 
         _controller = gameObject.GetComponent<CharacterController>();
+        _controller.center = new Vector3(0, 2.5f, 0);
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
@@ -135,7 +136,7 @@ public class AgentMover : Agent
         var discreteActionsOut = actionsOut.DiscreteActions;
         if (Input.GetKey(KeyCode.D))
         {
-            discreteActionsOut[0] = 5;
+            discreteActionsOut[0] = 4;
         }
         else if (Input.GetKey(KeyCode.W))
         {
@@ -144,12 +145,22 @@ public class AgentMover : Agent
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            discreteActionsOut[0] = 6;
+            discreteActionsOut[0] = 3;
         }
         else if (Input.GetKey(KeyCode.S))
         {
             discreteActionsOut[0] = 2;
         }
+        /*
+        else if (Input.GetKey(KeyCode.Q))
+        {
+            discreteActionsOut[0] = 3;
+        }
+        else if (Input.GetKey(KeyCode.E))
+        {
+            discreteActionsOut[0] = 4;
+        }
+        */
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -222,25 +233,22 @@ public class AgentMover : Agent
             case 1:
                 _controller.Move(transform.forward*m_EnvironmentSettings.agentRunSpeed);
                 //dirToGo = transform.forward * 1f;
-                Debug.Log("frem");
                 break;
             case 2:
                 _controller.Move(transform.forward * (m_EnvironmentSettings.agentRunSpeed * -1));
-                Debug.Log("og tilbag");
                 break;
             case 3:
                 //rotateDir = transform.up * 1f;
+                _controller.transform.Rotate(0, -m_EnvironmentSettings.agentRotationSpeed, 0);
                 break;
             case 4:
-                //rotateDir = transform.up * -1f;
+                _controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
                 break;
             case 5:
-                _controller.Move(transform.right* m_EnvironmentSettings.agentRunSpeed);
-                Debug.Log("Shiffel to the right");
+                //_controller.Move(transform.right* m_EnvironmentSettings.agentRunSpeed);
                 break;
             case 6:
-                _controller.Move(transform.right*(m_EnvironmentSettings.agentRunSpeed*-1));
-                Debug.Log("chris rock! chris rock");
+                //_controller.Move(transform.right*(m_EnvironmentSettings.agentRunSpeed*-1));
                 break;
         }
         //transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);

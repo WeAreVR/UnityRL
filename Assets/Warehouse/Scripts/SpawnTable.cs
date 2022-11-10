@@ -15,8 +15,7 @@ public class SpawnTable : MonoBehaviour
 
         for(int i = 0; i < m_EnvironmentSettings.numberOfTables; i++)
         {
-            tables.Add(Instantiate(table, new Vector3(Random.Range(0f, 50f), 0, Random.Range(0f, 50f)), Quaternion.identity));           
-
+            tables.Add(Instantiate(table, new Vector3(Random.Range(-50f, 50f), 0, Random.Range(-50f, 50f)), Quaternion.identity));           
         }
     }
 }

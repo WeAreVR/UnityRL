@@ -358,9 +358,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509e3f7f1bb0661448f7464b6c34c380, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  packageNumber: 0
+  randomMaterials: []
+  shelf: []
   myPrefab: {fileID: 4793774884153413099, guid: 15a664e697f1e864093b6902e8e8b752, type: 3}
   tableSpawned: {fileID: 0}
-  randomMaterials: []
 --- !u!65 &3871167548071508613
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -386,6 +388,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf29c135ef7a024c95cd5768dfd40e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  packageNumber: 0
+  randomMaterials: []
+  shelf:
+  - {fileID: 6997461635455601595, guid: fd11952a2b48a7e40a40e83e13860d45, type: 3}
 --- !u!54 &8146786309267648585
 Rigidbody:
   m_ObjectHideFlags: 0
