@@ -19,6 +19,9 @@ TagManager:
   - TablePackage3
   - TablePackage4
   - TablePackage5
+  - Shelf
+  - Table0
+  - TablePackage0
   layers:
   - Default
   - TransparentFX

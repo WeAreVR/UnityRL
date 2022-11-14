@@ -19,7 +19,7 @@ public class SpawnPackage : TableCollisonCheck
         int randomNumberMaterial = packageNumber = Random.Range(0, randomMaterials.Length);
 
         //Assign random color to object will later add so each is a different package
-        ChangeMaterial(randomMaterials[randomNumberMaterial],gameObject,packageNumber,"Table");
+        ChangeMaterial(randomMaterials[randomNumberMaterial], gameObject,packageNumber,"Table");
         ChangeMaterial(randomMaterials[randomNumberMaterial], tableSpawned, packageNumber, "TablePackage");
     }
 
@@ -33,14 +33,15 @@ public class SpawnPackage : TableCollisonCheck
 
     void ChangeMaterial(Material newMat,GameObject obj,int number,string tagName)
     {
+        Debug.Log(newMat);
         Renderer[] children;
         obj.GetComponent<TableCollisonCheck>().packageNumber = number;
         children = obj.GetComponentsInChildren<Renderer>();
         
-        //obj.tag = tagName+packageNumber;
+        obj.tag = tagName+packageNumber;
         foreach (Renderer rend in children)
         {
-            rend.tag = tagName + packageNumber;
+            rend.tag = tagName;
             var mats = new Material[rend.materials.Length];
             for (var j = 0; j < rend.materials.Length; j++)
             {

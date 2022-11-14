@@ -134,23 +134,25 @@ public class AgentMover : Agent
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         var discreteActionsOut = actionsOut.DiscreteActions;
-        if (Input.GetKey(KeyCode.D))
-        {
-            discreteActionsOut[0] = 4;
-        }
-        else if (Input.GetKey(KeyCode.W))
+        
+         if (Input.GetKey(KeyCode.W))
         {
 
             discreteActionsOut[0] = 1;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            discreteActionsOut[0] = 3;
         }
         else if (Input.GetKey(KeyCode.S))
         {
             discreteActionsOut[0] = 2;
         }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            discreteActionsOut[0] = 4;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            discreteActionsOut[0] = 3;
+        }
+        
         /*
         else if (Input.GetKey(KeyCode.Q))
         {
@@ -167,8 +169,8 @@ public class AgentMover : Agent
 
         if (isColliding) return;
         isColliding = true;
-        
-        if (other.tag == "Table" && gotPackage == true)
+        Transform firstChild = other.transform.GetChild(0);
+        if (firstChild.tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
@@ -202,7 +204,7 @@ public class AgentMover : Agent
             EndEpisode();
         }
 
-        if (other.tag == "TablePackage" && gotPackage == false)
+        if (firstChild.tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
             AddReward(1f);
@@ -243,12 +245,6 @@ public class AgentMover : Agent
                 break;
             case 4:
                 _controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
-                break;
-            case 5:
-                //_controller.Move(transform.right* m_EnvironmentSettings.agentRunSpeed);
-                break;
-            case 6:
-                //_controller.Move(transform.right*(m_EnvironmentSettings.agentRunSpeed*-1));
                 break;
         }
         //transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);

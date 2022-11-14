@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TableCollisonCheck : MonoBehaviour
@@ -10,14 +11,14 @@ public class TableCollisonCheck : MonoBehaviour
     public Material[] randomMaterials;
     public GameObject[] shelf;
 
+   
 
 
     void OnTriggerEnter(Collider other)
       {
 
-          if (other.gameObject.tag == "Table" || other.gameObject.tag == "TablePackage")
+          if (other.gameObject.tag != "Agent" )
           {
-              Debug.Log("Collision");
               transform.position = new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f));
           }
 

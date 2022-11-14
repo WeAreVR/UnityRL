@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3201832356820324794}
   m_Layer: 0
   m_Name: Capsule
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 5618816073417197148}
   m_Layer: 0
   m_Name: Sphere (1)
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 1172095722439056520}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 1834124013858834369}
   m_Layer: 0
   m_Name: Sphere
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 3416575774843195015}
   m_Layer: 0
   m_Name: Capsule (1)
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -612,12 +612,13 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   setActivatePackage: {fileID: 5965233889864955781}
+  _controller: {fileID: 0}
   gotPackage: 0
   whichPackage: 1
   tableTargetPrefab: {fileID: 0}
   changeMaterial: {fileID: 0}
-  listOfTables: []
-  listOfTablesWithPackge: []
+  agentSpeed: 1
+  plane: {fileID: 0}
 --- !u!114 &3011452863660538780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,7 +647,7 @@ GameObject:
   - component: {fileID: 4671471525615755655}
   m_Layer: 0
   m_Name: Package
-  m_TagString: Untagged
+  m_TagString: Agent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
