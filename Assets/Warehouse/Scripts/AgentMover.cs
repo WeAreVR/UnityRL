@@ -26,7 +26,7 @@ public class AgentMover : Agent
     public Material changeMaterial;
     private List<GameObject> listOfTables = new List<GameObject>();
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
-    private GameObject settings;
+    private SpawnTable settings;
     private bool isColliding = false;
     public int agentSpeed = 1;
     public GameObject plane;
@@ -46,7 +46,7 @@ public class AgentMover : Agent
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_BehaviorParameters = FindObjectOfType<BehaviorParameters>();
         m_SpawnTable = FindObjectOfType<SpawnTable>();
-        settings = GameObject.Find("EnvironmentSettings");
+        settings = transform.root.GetComponent<SpawnTable>(); ;
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         //Get back with smart way to do this
         //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
@@ -73,12 +73,17 @@ public class AgentMover : Agent
 
     public override void OnEpisodeBegin()
     {
+        //Package on top of the agent
+        setActivatePackage.SetActive(false);
+        //clear list so we we dont get double
         ClearAndDestoryList(listOfTablesWithPackge, listOfTables);
+        //Instantiate all the tables
         m_SpawnTable.SpawnTables();
-        Debug.Log(plane.transform.localPosition);
-        //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
-        listOfTables = settings.GetComponent<SpawnTable>().tables;
-        Invoke("addToList", 0.2f);
+
+        //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
+        listOfTables = settings.tables;
+        //trashy way to make sure tables are spawned before adding them to the list 
+        Invoke("addToList", 0.1f);
         _controller.enabled = false;
         _controller.transform.position = new Vector3(0, 0, 0);
         _controller.enabled = true;
@@ -94,14 +99,12 @@ public class AgentMover : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        //På nuværende tidspunkt ved den ikke hvilke border som har/skal havde de rigtige pakker
-        //Vi skal adde whichPackage fra bordene også men ved ikke hvordan vi gør det på nurværnde tidspunkt, måske bare GetComponent<TableCollisonCheck>().packageNumber;
-        //eller add dem i et dict til at starte med
+       
         //mlagent sorter kan måske være relevant
         sensor.AddObservation(transform.localPosition);
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
-
+        
         for (int i = 0; i < listOfTables.Count; i++)
         {
             /* No need for y since it is never used i think

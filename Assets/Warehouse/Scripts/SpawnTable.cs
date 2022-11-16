@@ -8,14 +8,32 @@ public class SpawnTable : MonoBehaviour
     [SerializeField] GameObject table;
 
     public List<GameObject> tables = new List<GameObject>();
-    
+    public List<GameObject> ports = new List<GameObject>();
+    public GameObject port;
+    public int numberOfTables;
+    public List<GameObject> copiedList;
     public void SpawnTables()
     {
-        m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
+        //Get all ports
+        for (int i = 0; i < port.transform.childCount; i++)
+        { 
+            ports.Add(port.transform.GetChild(i).gameObject);  
+        }
 
-        for(int i = 0; i < m_EnvironmentSettings.numberOfTables; i++)
+        //copy list til spawnPackage
+        copiedList = new List<GameObject>(ports);
+        
+        m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
+        int numberOfTables = m_EnvironmentSettings.numberOfTables > ports.Count ? ports.Count: m_EnvironmentSettings.numberOfTables;
+
+        for(int i = 0; i < numberOfTables; i++)
         {
-            tables.Add(Instantiate(table, new Vector3(Random.Range(-50f, 50f), 0, Random.Range(-50f, 50f)), Quaternion.identity));           
+            //instantiate table at port
+            int randomNunber = Random.Range(0, ports.Count);
+            tables.Add(Instantiate(table, ports[randomNunber].transform.position+ new Vector3(-15,0,15), Quaternion.Euler(0,90f,0)));
+            ports.RemoveAt(randomNunber);
+        
+            //tables.Add(Instantiate(table, transform.localPosition += new Vector3(Random.Range(-50f, 50f), 0, Random.Range(-50f, 50f)), Quaternion.identity));           
         }
     }
 }

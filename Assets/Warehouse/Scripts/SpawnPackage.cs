@@ -9,10 +9,18 @@ public class SpawnPackage : TableCollisonCheck
 
     [SerializeField] GameObject myPrefab;
     public GameObject tableSpawned;
+    private SpawnTable m_SpawnTable;
+
     void Start()
     {
 
-        tableSpawned = Instantiate(myPrefab, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.identity);
+        //tableSpawned = Instantiate(myPrefab, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.Euler(0, 90f, 0));
+        //add random range til new vector z hvis de skal være lidt forskellige
+        m_SpawnTable = FindObjectOfType<SpawnTable>();
+        int randomNunber = Random.Range(0, m_SpawnTable.copiedList.Count);
+        tableSpawned = Instantiate(myPrefab, m_SpawnTable.copiedList[randomNunber].transform.position + new Vector3(-15, 0, 150), Quaternion.Euler(0, 90f, 0));
+        m_SpawnTable.copiedList.RemoveAt(randomNunber);
+
 
         //Need to be placed under Resources/ "Will try to find a workaround
         randomMaterials = Resources.LoadAll("Materials", typeof(Material)).Cast<Material>().ToArray();
@@ -33,7 +41,6 @@ public class SpawnPackage : TableCollisonCheck
 
     void ChangeMaterial(Material newMat,GameObject obj,int number,string tagName)
     {
-        Debug.Log(newMat);
         Renderer[] children;
         obj.GetComponent<TableCollisonCheck>().packageNumber = number;
         children = obj.GetComponentsInChildren<Renderer>();
