@@ -30,6 +30,7 @@ public class AgentMover : Agent
     private bool isColliding = false;
     public int agentSpeed = 1;
     public GameObject plane;
+    public RayPerceptionOutput.RayOutput[] RayOutputs;
 
      void Update()
     {
@@ -140,7 +141,7 @@ public class AgentMover : Agent
         
          if (Input.GetKey(KeyCode.W))
         {
-
+            //Debug.Log(RayOutputs);
             discreteActionsOut[0] = 1;
         }
         else if (Input.GetKey(KeyCode.S))
@@ -169,11 +170,34 @@ public class AgentMover : Agent
     }
     private void OnTriggerEnter(Collider other)
     {
-
         if (isColliding) return;
         isColliding = true;
-        Transform firstChild = other.transform.GetChild(0);
-        if (firstChild.tag == "Table" && gotPackage == true)
+        Debug.Log("bang1");
+        //Transform firstChild = other.transform.GetChild(0);
+
+        if (other.tag == "wall" || other.tag == "agent")
+        {
+
+            Debug.Log("bang");
+            AddReward(-1f);
+            EndEpisode();
+        }
+
+        if (other.transform.GetChild(0).tag == "TablePackage" && gotPackage == false)
+        {
+            tableTargetPrefab = other.gameObject;
+            AddReward(1f);
+            setActivatePackage.SetActive(true);
+            whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
+            //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
+            //super trashy m�de at g�re det p� f�ler jeg men det virker
+            GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
+            changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
+            gotPackage = true;
+            setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
+        }
+
+        if (other.transform.GetChild(0).tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {
@@ -198,29 +222,6 @@ public class AgentMover : Agent
                 }
             }
         }
-
-        if (other.tag == "wall" || other.tag == "agent")
-        {
-
-            Debug.Log("bang");
-            AddReward(-1f);
-            EndEpisode();
-        }
-
-        if (firstChild.tag == "TablePackage" && gotPackage == false)
-        {
-            tableTargetPrefab = other.gameObject;
-            AddReward(1f);
-            setActivatePackage.SetActive(true);
-            whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
-            //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
-            //super trashy m�de at g�re det p� f�ler jeg men det virker
-            GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
-            changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
-            gotPackage = true;
-            setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
-        }
-
 
     }
     public void MoveAgent(ActionSegment<int> act)
