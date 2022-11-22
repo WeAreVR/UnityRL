@@ -13,7 +13,7 @@ public class AgentMover : Agent
     private Rigidbody m_AgentRb;
     private EnvironmentSettings m_EnvironmentSettings;
     private BehaviorParameters m_BehaviorParameters;
-    private SpawnTable m_SpawnTable;
+    public SpawnTable m_SpawnTable;
 
     [SerializeField] private GameObject setActivatePackage;
 
@@ -32,7 +32,7 @@ public class AgentMover : Agent
     public GameObject plane;
     public RayPerceptionOutput.RayOutput[] RayOutputs;
 
-     void Update()
+    void Update()
     {
         isColliding = false;
     }
@@ -45,8 +45,8 @@ public class AgentMover : Agent
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
-        m_BehaviorParameters = FindObjectOfType<BehaviorParameters>();
-        m_SpawnTable = FindObjectOfType<SpawnTable>();
+        m_BehaviorParameters = gameObject.transform.GetComponent<BehaviorParameters>();
+        //m_SpawnTable = FindObjectOfType<SpawnTable>();
         settings = transform.root.GetComponent<SpawnTable>(); ;
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         //Get back with smart way to do this
@@ -55,6 +55,7 @@ public class AgentMover : Agent
         //
 
         //3 for transform og 2 for de andre
+        //NOTE: 1 FRAME MED 5 OBSERVATIONS!!! SANDSYNLIGVIS IKKE ET PROBLEM??
         numberOfVectorsInTablesWithPair = m_EnvironmentSettings.numberOfTables * 4;
         m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 5;
 
@@ -84,9 +85,9 @@ public class AgentMover : Agent
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
         //trashy way to make sure tables are spawned before adding them to the list 
-        Invoke("addToList", 0.1f);
+        Invoke("addToList", 0.2f);
         _controller.enabled = false;
-        _controller.transform.position = new Vector3(0, 0, 0);
+        _controller.transform.position = plane.transform.position;
         _controller.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         _controller.enabled = true;
         //transform.localPosition = plane.transform.localPosition;
@@ -182,8 +183,7 @@ public class AgentMover : Agent
             AddReward(-1f);
             EndEpisode();
         }
-
-        if (other.transform.GetChild(0).tag == "TablePackage" && gotPackage == false)
+        if (other.tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
             AddReward(0.5f);
@@ -197,7 +197,7 @@ public class AgentMover : Agent
             setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
         }
 
-        if (other.transform.GetChild(0).tag == "Table" && gotPackage == true)
+        if (other.tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
             {

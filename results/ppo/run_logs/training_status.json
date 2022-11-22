@@ -1,4 +1,26 @@
 {
+    "MoveToTables": {
+        "checkpoints": [
+            {
+                "steps": 3065,
+                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-3065.onnx",
+                "reward": -0.9571428571428572,
+                "creation_time": 1669130809.646493,
+                "auxillary_file_paths": [
+                    "results\\ppo\\MoveToTables\\MoveToTables-3065.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3065,
+            "file_path": "results\\ppo\\MoveToTables.onnx",
+            "reward": -0.9571428571428572,
+            "creation_time": 1669130809.646493,
+            "auxillary_file_paths": [
+                "results\\ppo\\MoveToTables\\MoveToTables-3065.pt"
+            ]
+        }
+    },
     "metadata": {
         "stats_format_version": "0.3.0",
         "mlagents_version": "0.29.0",

@@ -666,6 +666,7 @@ MonoBehaviour:
   shelf: []
   myPrefab: {fileID: 4793774884153413099, guid: 15a664e697f1e864093b6902e8e8b752, type: 3}
   tableSpawned: {fileID: 0}
+  m_SpawnTable: {fileID: 0}
 --- !u!114 &7899911674709485689
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,9 +16,10 @@ public class SpawnPackage : TableCollisonCheck
 
         //tableSpawned = Instantiate(myPrefab, new Vector3(Random.Range(0f, 100f), 0, Random.Range(0f, 100f)), Quaternion.Euler(0, 90f, 0));
         //add random range til new vector z hvis de skal være lidt forskellige
-        m_SpawnTable = FindObjectOfType<SpawnTable>();
+        //m_SpawnTable = FindObjectOfType<SpawnTable>();
+        m_SpawnTable = gameObject.transform.root.GetComponent<SpawnTable>();
         int randomNunber = Random.Range(0, m_SpawnTable.copiedList.Count);
-        tableSpawned = Instantiate(myPrefab, m_SpawnTable.copiedList[2].transform.position + new Vector3(-15, 0, 150), Quaternion.Euler(0, 90f, 0));
+        tableSpawned = Instantiate(myPrefab, m_SpawnTable.copiedList[randomNunber].transform.position + new Vector3(-15, 0, 150), Quaternion.Euler(0, 90f, 0),gameObject.transform.root);
         m_SpawnTable.copiedList.RemoveAt(randomNunber);
 
 
@@ -44,8 +45,9 @@ public class SpawnPackage : TableCollisonCheck
         Renderer[] children;
         obj.GetComponent<TableCollisonCheck>().packageNumber = number;
         children = obj.GetComponentsInChildren<Renderer>();
-        
-        obj.tag = tagName+packageNumber;
+
+        //NOTE: vi slettet +packageNumber i linje 49
+        obj.tag = tagName;
         foreach (Renderer rend in children)
         {
             rend.tag = tagName;
