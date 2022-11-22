@@ -564,6 +564,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432267087}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &567699469 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5102337633346384219, guid: ba2da128640089740a76efbe279b49b4, type: 3}
+  m_PrefabInstance: {fileID: 5102337633918569611}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &615127265
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,6 +898,42 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5102337633346384218, guid: ba2da128640089740a76efbe279b49b4, type: 3}
   m_PrefabInstance: {fileID: 5102337633918569611}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1046822359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567699469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: RayPerceptionSensor
+  m_DetectableTags:
+  - Table1
+  - Table2
+  - Table3
+  - Table4
+  - Table0
+  - TablePackage0
+  - TablePackage1
+  - TablePackage2
+  - TablePackage3
+  - TablePackage4
+  m_RaysPerDirection: 8
+  m_MaxRayDegrees: 90
+  m_SphereCastRadius: 0.5
+  m_RayLength: 100
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967291
+  m_ObservationStacks: 1
+  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0
 --- !u!1 &1211186670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,12 +1414,16 @@ PrefabInstance:
       value: 179
       objectReference: {fileID: 0}
     - target: {fileID: 5102337633346384217, guid: ba2da128640089740a76efbe279b49b4, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102337633346384217, guid: ba2da128640089740a76efbe279b49b4, type: 3}
       propertyPath: m_BehaviorType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5102337633346384217, guid: ba2da128640089740a76efbe279b49b4, type: 3}
       propertyPath: m_InferenceDevice
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5102337633346384218, guid: ba2da128640089740a76efbe279b49b4, type: 3}
       propertyPath: m_RootOrder
@@ -1428,7 +1473,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Agent
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5102337632650677718, guid: ba2da128640089740a76efbe279b49b4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ba2da128640089740a76efbe279b49b4, type: 3}
 --- !u!1001 &5562417938627727886
 PrefabInstance:
