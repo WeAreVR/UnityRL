@@ -18,7 +18,7 @@ public class SpawnPackage : TableCollisonCheck
         //add random range til new vector z hvis de skal være lidt forskellige
         m_SpawnTable = FindObjectOfType<SpawnTable>();
         int randomNunber = Random.Range(0, m_SpawnTable.copiedList.Count);
-        tableSpawned = Instantiate(myPrefab, m_SpawnTable.copiedList[randomNunber].transform.position + new Vector3(-15, 0, 150), Quaternion.Euler(0, 90f, 0));
+        tableSpawned = Instantiate(myPrefab, m_SpawnTable.copiedList[2].transform.position + new Vector3(-15, 0, 150), Quaternion.Euler(0, 90f, 0));
         m_SpawnTable.copiedList.RemoveAt(randomNunber);
 
 

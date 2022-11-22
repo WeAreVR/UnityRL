@@ -14,6 +14,8 @@ public class SpawnTable : MonoBehaviour
     public List<GameObject> copiedList;
     public void SpawnTables()
     {
+        ports.Clear();
+        copiedList.Clear();
         //Get all ports
         for (int i = 0; i < port.transform.childCount; i++)
         { 
@@ -30,7 +32,7 @@ public class SpawnTable : MonoBehaviour
         {
             //instantiate table at port
             int randomNunber = Random.Range(0, ports.Count);
-            tables.Add(Instantiate(table, ports[randomNunber].transform.position+ new Vector3(-15,0,15), Quaternion.Euler(0,90f,0)));
+            tables.Add(Instantiate(table, ports[2].transform.position+ new Vector3(-15,0,15), Quaternion.Euler(0,90f,0)));
             ports.RemoveAt(randomNunber);
         
             //tables.Add(Instantiate(table, transform.localPosition += new Vector3(Random.Range(-50f, 50f), 0, Random.Range(-50f, 50f)), Quaternion.identity));           

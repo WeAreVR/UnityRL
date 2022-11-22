@@ -87,6 +87,7 @@ public class AgentMover : Agent
         Invoke("addToList", 0.1f);
         _controller.enabled = false;
         _controller.transform.position = new Vector3(0, 0, 0);
+        _controller.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         _controller.enabled = true;
         //transform.localPosition = plane.transform.localPosition;
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -116,6 +117,7 @@ public class AgentMover : Agent
             sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
             sensor.AddObservation(listOfTables[i].transform.position.x);
             sensor.AddObservation(listOfTables[i].transform.position.z);
+            
         }
         /*
         
@@ -172,13 +174,11 @@ public class AgentMover : Agent
     {
         if (isColliding) return;
         isColliding = true;
-        Debug.Log("bang1");
         //Transform firstChild = other.transform.GetChild(0);
 
         if (other.tag == "wall" || other.tag == "agent")
         {
 
-            Debug.Log("bang");
             AddReward(-1f);
             EndEpisode();
         }
@@ -186,7 +186,7 @@ public class AgentMover : Agent
         if (other.transform.GetChild(0).tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
-            AddReward(1f);
+            AddReward(0.5f);
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
