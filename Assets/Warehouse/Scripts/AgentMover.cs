@@ -138,7 +138,7 @@ public class AgentMover : Agent
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-
+        AddReward(-1f / MaxStep);
         MoveAgent(actionBuffers.DiscreteActions);
 
     }
@@ -184,8 +184,8 @@ public class AgentMover : Agent
         if (other.tag == "wall" || other.tag == "agent")
         {
 
-            AddReward(-1f);
-            EndEpisode();
+            //AddReward(-1f);
+            //EndEpisode();
         }
         if (other.tag == "TablePackage" && gotPackage == false)
         {

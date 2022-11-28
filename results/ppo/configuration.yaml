@@ -61,7 +61,7 @@ behaviors:
         encoding_size: null
         use_actions: false
         use_vail: false
-        demo_path: Demos/TableAgentDemo1_14.demo
+        demo_path: Demos/TableAgentDemo1_15.demo
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000

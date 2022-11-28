@@ -1,0 +1,17 @@
+Mono path[0] = 'D:/Program Files (x86)/unityBuilds/Warehouse_Data/Managed'
+Mono config path = 'D:/Program Files (x86)/unityBuilds/MonoBleedingEdge/etc'
+Initialize engine version: 2021.3.11f1 (0a5ca18544bf)
+[Subsystems] Discovering subsystems at path D:/Program Files (x86)/unityBuilds/Warehouse_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 2060 (ID=0x1e89)
+    Vendor:   NVIDIA
+    VRAM:     5958 MB
+    Driver:   31.0.15.2698
+Begin MonoManager ReloadAssembly
+- Completed reload, in  2.928 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.827600 ms

@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1669645218",
+        "python_version": "3.9.13 (main, Aug 25 2022, 23:51:50) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\thoma\\anaconda3\\envs\\py3913\\Scripts\\mlagents-learn moveToGoal.yaml --num-envs=5 --env=D:\\Program Files (x86)\\unityBuilds\\Warehouse --run-id=2 --force",
+        "mlagents_version": "0.29.0",
+        "mlagents_envs_version": "0.29.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "1.12.1+cu116",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1669645657"
+    },
+    "total": 439.2374503,
+    "count": 1,
+    "self": 10.006856699999958,
+    "children": {
+        "run_training.setup": {
+            "total": 0.3697709,
+            "count": 1,
+            "self": 0.3697709
+        },
+        "TrainerController.start_learning": {
+            "total": 428.8608227,
+            "count": 1,
+            "self": 0.0004342000000292501,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 428.8603762,
+                    "count": 1,
+                    "self": 428.8603762
+                },
+                "trainer_threads": {
+                    "total": 8.000000093488779e-07,
+                    "count": 1,
+                    "self": 8.000000093488779e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 1.1499999970965291e-05,
+                    "count": 1,
+                    "self": 1.1499999970965291e-05
+                }
+            }
+        }
+    }
+}
