@@ -72,7 +72,6 @@ public class SpawnTable : MonoBehaviour
 
     void ChangeMaterial(Material newMat, GameObject obj, int number, string tagName)
     {
-        Debug.Log(newMat);
         Renderer[] children;
         children = obj.GetComponentsInChildren<Renderer>();
 

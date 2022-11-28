@@ -155,13 +155,13 @@ public class AgentMover : Agent
         {
             discreteActionsOut[0] = 2;
         }
-        else if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
-            discreteActionsOut[0] = 4;
+            discreteActionsOut[1] = 2;
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            discreteActionsOut[0] = 3;
+            discreteActionsOut[1] = 1;
         }
         
         /*
@@ -235,7 +235,8 @@ public class AgentMover : Agent
         var rotateDir = Vector3.zero;
 
         var action = act[0];
-        
+        var action1 = act[1];
+
         //testede det her og det virkede ikke s�rlig godt, men det ville nok v�re det rigtige at bruge se om vi kan g�re bedre
         //skal den kunne rotate up?
         switch (action)
@@ -247,22 +248,23 @@ public class AgentMover : Agent
             case 2:
                 _controller.Move(transform.forward * (m_EnvironmentSettings.agentRunSpeed * -1));
                 break;
-            case 3:
-                //rotateDir = transform.up * 1f;
-                _controller.Move(transform.right * (m_EnvironmentSettings.agentRunSpeed * -1));
-
-                //_controller.transform.Rotate(0, -m_EnvironmentSettings.agentRotationSpeed, 0);
+        }
+        switch (action1)
+        {
+            case 1:
+                // _controller.Move(transform.forward * m_EnvironmentSettings.agentRunSpeed);
+                //dirToGo = transform.forward * 1f;
+                _controller.transform.Rotate(0, -m_EnvironmentSettings.agentRotationSpeed, 0);
                 break;
-            case 4:
-                _controller.Move(transform.right * m_EnvironmentSettings.agentRunSpeed);
-
-                //_controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
+            case 2:
+                //_controller.Move(transform.forward * (m_EnvironmentSettings.agentRunSpeed * -1));
+                _controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
                 break;
         }
         //transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);
         //m_AgentRb.AddForce(dirToGo * m_EnvironmentSettings.agentRunSpeed,
-          //  ForceMode.VelocityChange);
-        
+        //  ForceMode.VelocityChange);
+
     }
     
     void RemoveFromList(List<GameObject> list,GameObject obj)
