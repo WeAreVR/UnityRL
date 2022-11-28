@@ -84,8 +84,10 @@ public class AgentMover : Agent
 
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
+        listOfTablesWithPackge = settings.packages;
+        
         //trashy way to make sure tables are spawned before adding them to the list 
-        Invoke("addToList", 0.2f);
+        //Invoke("addToList", 0.2f);
         _controller.enabled = false;
         _controller.transform.position = plane.transform.position;
         _controller.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -114,11 +116,13 @@ public class AgentMover : Agent
             sensor.AddObservation(listOfTablesWithPackge[i].transform.position);
             sensor.AddObservation(listOfTables[i].transform.position);
             */
-            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
-            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
-            sensor.AddObservation(listOfTables[i].transform.position.x);
-            sensor.AddObservation(listOfTables[i].transform.position.z);
-            
+            var dirToTable = (listOfTables[i].transform.localPosition - transform.localPosition).normalized;
+            var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
+            sensor.AddObservation(dirToPackage.x);
+            sensor.AddObservation(dirToPackage.z);
+            sensor.AddObservation(dirToTable.x);
+            sensor.AddObservation(dirToTable.z);
+
         }
         /*
         
@@ -245,10 +249,14 @@ public class AgentMover : Agent
                 break;
             case 3:
                 //rotateDir = transform.up * 1f;
-                _controller.transform.Rotate(0, -m_EnvironmentSettings.agentRotationSpeed, 0);
+                _controller.Move(transform.right * (m_EnvironmentSettings.agentRunSpeed * -1));
+
+                //_controller.transform.Rotate(0, -m_EnvironmentSettings.agentRotationSpeed, 0);
                 break;
             case 4:
-                _controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
+                _controller.Move(transform.right * m_EnvironmentSettings.agentRunSpeed);
+
+                //_controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
                 break;
         }
         //transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);

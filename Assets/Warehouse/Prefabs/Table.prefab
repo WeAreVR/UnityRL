@@ -643,7 +643,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3513785771432952760}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b07de2b71006af343a43847e3c9711f8, type: 3}
   m_Name: 
@@ -662,11 +662,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   packageNumber: 0
-  randomMaterials: []
-  shelf: []
   myPrefab: {fileID: 4793774884153413099, guid: 15a664e697f1e864093b6902e8e8b752, type: 3}
   tableSpawned: {fileID: 0}
-  m_SpawnTable: {fileID: 0}
 --- !u!114 &7899911674709485689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,9 +677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   packageNumber: 0
-  randomMaterials: []
-  shelf:
-  - {fileID: 6997461635455601595, guid: fd11952a2b48a7e40a40e83e13860d45, type: 3}
 --- !u!65 &3871167548071508613
 BoxCollider:
   m_ObjectHideFlags: 0
