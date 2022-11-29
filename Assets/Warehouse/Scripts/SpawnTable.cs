@@ -65,6 +65,7 @@ public class SpawnTable : MonoBehaviour
         int randomNumberMaterial = packageNumber = Random.Range(0, randomMaterials.Length);
 
         //Assign random color to object will later add so each is a different package
+
         ChangeMaterial(randomMaterials[randomNumberMaterial], tablePackage, packageNumber, "TablePackage");
         ChangeMaterial(randomMaterials[randomNumberMaterial], tablePrefab, packageNumber, "Table");
         
@@ -74,6 +75,7 @@ public class SpawnTable : MonoBehaviour
     {
         Renderer[] children;
         children = obj.GetComponentsInChildren<Renderer>();
+        obj.GetComponent<TableCollisonCheck>().packageNumber = number;
 
         //NOTE: vi slettet +packageNumber i linje 49
         obj.tag = tagName;

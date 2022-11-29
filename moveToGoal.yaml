@@ -25,6 +25,6 @@ behaviors:
         network_settings:
           hidden_units: 256
       gail:
-        strength: 0.01
+        strength: 0.50
         gamma: 0.99
         demo_path: Demos/TableAgentDemo1_15.demo

@@ -72,16 +72,33 @@ public class AgentMover : Agent
             listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
         }
     }
+    void setStartPackage()
+    {
+        whichPackage = FindObjectOfType<TableCollisonCheck>().packageNumber;
+        gotPackage = true;
+
+        //Denne her linje vil skabe problemer fordi vi kun har 1 bord
+        //ClearAndDestoryList(listOfTablesWithPackge);
+        
+        setActivatePackage.SetActive(true);
+
+        var mat = FindObjectOfType<TableCollisonCheck>().transform.GetChild(0).GetComponent<Renderer>().material;
+        setActivatePackage.GetComponent<Renderer>().material = mat;
+
+
+    }
 
     public override void OnEpisodeBegin()
     {
         //Package on top of the agent
         setActivatePackage.SetActive(false);
         //clear list so we we dont get double
-        ClearAndDestoryList(listOfTablesWithPackge, listOfTables);
+        ClearAndDestoryList(listOfTablesWithPackge);
+        ClearAndDestoryList(listOfTables);
         //Instantiate all the tables
         m_SpawnTable.SpawnTables();
 
+        
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
         listOfTablesWithPackge = settings.packages;
@@ -99,6 +116,11 @@ public class AgentMover : Agent
         //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
         whichPackage = -1;
+        
+        //
+        // Denne funktion skal kun køres når vi kun vil teste et bord
+        setStartPackage();
+        //
 
 
     }
@@ -113,11 +135,16 @@ public class AgentMover : Agent
         for (int i = 0; i < listOfTables.Count; i++)
         {
             /* No need for y since it is never used i think
-            sensor.AddObservation(listOfTablesWithPackge[i].transform.position);
-            sensor.AddObservation(listOfTables[i].transform.position);
+            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
+            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
+            sensor.AddObservation(listOfTables[i].transform.position.x);
+            sensor.AddObservation(listOfTables[i].transform.position.z);
             */
+            
             var dirToTable = (listOfTables[i].transform.localPosition - transform.localPosition).normalized;
             var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
+            //kig på det her 
+            
             sensor.AddObservation(dirToPackage.x);
             sensor.AddObservation(dirToPackage.z);
             sensor.AddObservation(dirToTable.x);
@@ -134,8 +161,10 @@ public class AgentMover : Agent
         }
         */
     }
-
-
+    
+        
+        
+    
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         AddReward(-1f / MaxStep);
@@ -280,15 +309,13 @@ public class AgentMover : Agent
     }
 
 
-    void ClearAndDestoryList(List<GameObject> list, List<GameObject> list2)
+    void ClearAndDestoryList(List<GameObject> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
             Destroy(list[i]);
-            Destroy(list2[i]);
         }
         list.Clear();
-        list2.Clear();
 
     }
 }
