@@ -107,7 +107,7 @@ public class AgentMover : Agent
         //Invoke("addToList", 0.2f);
         _controller.enabled = false;
         _controller.transform.position = plane.transform.position;
-        _controller.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        _controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         _controller.enabled = true;
         //transform.localPosition = plane.transform.localPosition;
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -232,7 +232,7 @@ public class AgentMover : Agent
 
         if (other.tag == "Table" && gotPackage == true)
         {
-            if (other.GetComponent<SpawnPackage>().packageNumber == whichPackage)
+            if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
                 AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
@@ -246,7 +246,10 @@ public class AgentMover : Agent
                 RemoveFromList(listOfTables, other.gameObject);
                 RemoveFromList(listOfTablesWithPackge, tableTargetPrefab);
 
-                other.GetComponent<SpawnPackage>().ItemDelivered(tableTargetPrefab);
+                // other.GetComponent<TableCollisonCheck>().ItemDelivered(tableTargetPrefab);
+                // other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject);
+                //other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject, tableTargetPrefab);
+                m_SpawnTable.ItemDelivered(other.gameObject);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
                 if (listOfTables.Count == 0)

@@ -17,12 +17,7 @@ public class SpawnPackage : TableCollisonCheck
        
     }
 
-    public void ItemDelivered(GameObject pairedTable)
-    {
-        Destroy(gameObject);
-        Destroy(pairedTable);
-
-    }
+    
 
 
    

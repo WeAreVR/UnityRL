@@ -19,6 +19,22 @@ public class SpawnTable : MonoBehaviour
     private GameObject tablePrefab;
     private GameObject tablePackage;
 
+    public void ItemDelivered(GameObject pairedTable)
+    {
+        //Destroy(gameObject);
+
+        Destroy(pairedTable);
+
+    }
+
+    public void ItemDelivered(GameObject pairedTable, GameObject table)
+    {
+       
+        Destroy(pairedTable);
+        Destroy(table);
+
+    }
+
     public void SpawnTables()
     {
         // ports.Clear();
