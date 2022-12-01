@@ -31,15 +31,28 @@ public class AgentMover : Agent
     public int agentSpeed = 1;
     public GameObject plane;
     public RayPerceptionOutput.RayOutput[] RayOutputs;
+    public Material winMaterial;
+    public Material LoseMaterial;
+    public int steps;
+    //public GameObject plane;
 
-    void Update()
+    void FixedUpdate()
     {
         isColliding = false;
+        steps++;
+        if ( steps % MaxStep == 0)
+        {
+            plane.GetComponent<MeshRenderer>().material = LoseMaterial;
+            steps = 0;
+            //EndEpisode();
+            //Debug.Log(Academy.Instance.StepCount);
+        }
+        
     }
 
     public override void Initialize()
     {
-
+        //Debug.Log(MaxStep);
         _controller = gameObject.GetComponent<CharacterController>();
         _controller.center = new Vector3(0, 2.5f, 0);
         m_AgentRb = GetComponent<Rigidbody>();
@@ -107,6 +120,7 @@ public class AgentMover : Agent
         //Invoke("addToList", 0.2f);
         _controller.enabled = false;
         _controller.transform.position = plane.transform.position;
+        //_controller.transform.position = plane.transform.position;
         _controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
         _controller.enabled = true;
         //transform.localPosition = plane.transform.localPosition;
@@ -119,7 +133,7 @@ public class AgentMover : Agent
         
         //
         // Denne funktion skal kun køres når vi kun vil teste et bord
-        setStartPackage();
+        //setStartPackage();
         //
 
 
@@ -167,6 +181,7 @@ public class AgentMover : Agent
     
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
+        //steps++;
         AddReward(-1f / MaxStep);
         MoveAgent(actionBuffers.DiscreteActions);
 
@@ -229,14 +244,20 @@ public class AgentMover : Agent
             gotPackage = true;
             setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
         }
+        if(other.tag == "Table" && gotPackage == false)
+        {
+            AddReward(-1f);
+        }
 
         if (other.tag == "Table" && gotPackage == true)
         {
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
+                steps = 0;
                 AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
+                plane.GetComponent<MeshRenderer>().material = winMaterial;
                 /*
                 //virker ikke fjener ikke fra liste
                 listOfTablesWithPackge.Remove(other.gameObject);
@@ -249,7 +270,8 @@ public class AgentMover : Agent
                 // other.GetComponent<TableCollisonCheck>().ItemDelivered(tableTargetPrefab);
                 // other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject);
                 //other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject, tableTargetPrefab);
-                m_SpawnTable.ItemDelivered(other.gameObject);
+                //m_SpawnTable.ItemDelivered(other.gameObject);
+                m_SpawnTable.ItemDelivered(other.gameObject, tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
                 if (listOfTables.Count == 0)

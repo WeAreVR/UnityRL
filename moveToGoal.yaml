@@ -27,4 +27,4 @@ behaviors:
       gail:
         strength: 0.50
         gamma: 0.99
-        demo_path: Demos/TableAgentDemo1_15.demo
+        demo_path: Demos/WinTraining.demo
