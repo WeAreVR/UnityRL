@@ -7,19 +7,24 @@ using Unity.MLAgents.Sensors;
 
 public class AgentLogic : Agent
 {
-    [SerializeField] private Transform targetTransform;
+    [SerializeField] private GameObject packageTransform;
+    [SerializeField] private Transform dropPointTransform;
     [SerializeField] private Material winMaterial;
     [SerializeField] private Material loseMaterial;
     [SerializeField] private MeshRenderer floorMeshRenderer;
+    public bool gotPackage;
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(Random.Range(-1.5f, 1.4f), 0, Random.Range(-3.4f, 1.75f));
-        targetTransform.localPosition = new Vector3(Random.Range(-1.77f, 1.4f), 0, Random.Range(3.3f,4.25f));
+        transform.localPosition = new Vector3(9,0,-9);
+        packageTransform.transform.localPosition = new Vector3(Random.Range(-9f, 9f), 0, Random.Range(-8f , 8f));
+        gotPackage = false;
+        packageTransform.SetActive(true);
+        //packageTransform.localPosition = new Vector3(9,0,9);
     }
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(transform.localPosition);
-        sensor.AddObservation(targetTransform.localPosition);
+        sensor.AddObservation(packageTransform.transform.localPosition);
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
@@ -37,9 +42,15 @@ public class AgentLogic : Agent
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent<Package>(out Package package))
+        if (other.TryGetComponent<Package>(out Package package) && gotPackage == false)
         {
-            SetReward(1f);
+            AddReward(0.5f);
+            gotPackage = true;
+            packageTransform.SetActive(false);
+        }
+        if ((other.TryGetComponent<DropPoint>(out DropPoint dropPoint) && gotPackage))
+        {
+            AddReward(0.5f);
             floorMeshRenderer.material = winMaterial;
             EndEpisode();
         }
