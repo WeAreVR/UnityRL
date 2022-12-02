@@ -27,4 +27,4 @@ behaviors:
       gail:
         strength: 0.50
         gamma: 0.99
-        demo_path: Demos/0212Training.demo
+        demo_path: Demos/TestNewScale.demo

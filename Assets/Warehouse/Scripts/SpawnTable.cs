@@ -37,9 +37,6 @@ public class SpawnTable : MonoBehaviour
 
     public void SpawnTables()
     {
-        // ports.Clear();
-        //copiedList.Clear();
-        //Get all ports
         ports.Clear();
         
         for (int i = 0; i < port.transform.childCount; i++)
@@ -57,9 +54,9 @@ public class SpawnTable : MonoBehaviour
         {
             //instantiate table at port
             int randomNunber = Random.Range(0, ports.Count);
-            tablePrefab = Instantiate(table, ports[2].transform.position + new Vector3(-15, 0, 15), Quaternion.Euler(0, 90f, 0), gameObject.transform);
+            tablePrefab = Instantiate(table, ports[randomNunber].transform.position + new Vector3(-15, 0, 15), Quaternion.Euler(0, 90f, 0), gameObject.transform);
             tables.Add(tablePrefab);
-            ports.RemoveAt(2);
+            ports.RemoveAt(randomNunber);
             SpawnPackage(tablePrefab);
 
             //tables.Add(Instantiate(table, transform.localPosition += new Vector3(Random.Range(-50f, 50f), 0, Random.Range(-50f, 50f)), Quaternion.identity));           
@@ -71,9 +68,9 @@ public class SpawnTable : MonoBehaviour
         //add random range til new vector z hvis de skal være lidt forskellige
         //m_SpawnTable = FindObjectOfType<SpawnTable>();
         int randomNunber = Random.Range(0, copiedList.Count);
-        tablePackage = Instantiate(package, copiedList[2].transform.position + new Vector3(-15, 0, 60), Quaternion.Euler(0, 90f, 0), gameObject.transform.root);
+        tablePackage = Instantiate(package, copiedList[randomNunber].transform.position + new Vector3(-15, 0, 40), Quaternion.Euler(0, 90f, 0), gameObject.transform.root);
         packages.Add(tablePackage);
-        copiedList.RemoveAt(2);
+        copiedList.RemoveAt(randomNunber);
 
 
         //Need to be placed under Resources/ "Will try to find a workaround
