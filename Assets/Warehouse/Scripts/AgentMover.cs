@@ -40,6 +40,10 @@ public class AgentMover : Agent
     {
         isColliding = false;
         steps++;
+        //Debug.Log("egen" +transform.localPosition);
+        //Debug.Log("listOfPackage" + listOfTablesWithPackge[0].transform.localPosition);
+        //Debug.Log("List of Tables" + listOfTables[0].transform.localPosition);
+        //Debug.Log("dirToTable"+ (listOfTables[0].transform.localPosition - transform.localPosition).normalized);
         if ( steps % MaxStep == 0)
         {
             plane.GetComponent<MeshRenderer>().material = LoseMaterial;
@@ -142,7 +146,9 @@ public class AgentMover : Agent
     {
        
         //mlagent sorter kan måske være relevant
-        sensor.AddObservation(transform.localPosition);
+        sensor.AddObservation(transform.localPosition.x);
+        sensor.AddObservation(transform.localPosition.z);
+        sensor.AddObservation(transform.rotation.z);
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
         
@@ -158,11 +164,13 @@ public class AgentMover : Agent
             var dirToTable = (listOfTables[i].transform.localPosition - transform.localPosition).normalized;
             var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
             //kig på det her 
-            
-            sensor.AddObservation(dirToPackage.x);
-            sensor.AddObservation(dirToPackage.z);
-            sensor.AddObservation(dirToTable.x);
-            sensor.AddObservation(dirToTable.z);
+
+            sensor.AddObservation(listOfTables[i].transform.localPosition);
+            sensor.AddObservation(listOfTablesWithPackge[i].transform.localPosition);
+            //sensor.AddObservation(dirToPackage.x);
+            //sensor.AddObservation(dirToPackage.z);
+            //sensor.AddObservation(dirToTable.x);
+            //sensor.AddObservation(dirToTable.z);
 
         }
         /*

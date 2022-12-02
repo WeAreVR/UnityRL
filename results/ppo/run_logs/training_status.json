@@ -2,22 +2,31 @@
     "MoveToTables": {
         "checkpoints": [
             {
-                "steps": 402856,
-                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-402856.onnx",
-                "reward": -0.4998750872910023,
-                "creation_time": 1669905512.8236177,
+                "steps": 499936,
+                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-499936.onnx",
+                "reward": -1.0000000298023224,
+                "creation_time": 1669974309.989208,
                 "auxillary_file_paths": [
-                    "results\\ppo\\MoveToTables\\MoveToTables-402856.pt"
+                    "results\\ppo\\MoveToTables\\MoveToTables-499936.pt"
+                ]
+            },
+            {
+                "steps": 500256,
+                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-500256.onnx",
+                "reward": -1.0000000298023224,
+                "creation_time": 1669974310.108238,
+                "auxillary_file_paths": [
+                    "results\\ppo\\MoveToTables\\MoveToTables-500256.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 402856,
+            "steps": 500256,
             "file_path": "results\\ppo\\MoveToTables.onnx",
-            "reward": -0.4998750872910023,
-            "creation_time": 1669905512.8236177,
+            "reward": -1.0000000298023224,
+            "creation_time": 1669974310.108238,
             "auxillary_file_paths": [
-                "results\\ppo\\MoveToTables\\MoveToTables-402856.pt"
+                "results\\ppo\\MoveToTables\\MoveToTables-500256.pt"
             ]
         }
     },
