@@ -8,14 +8,14 @@ using Unity.MLAgents.Sensors;
 public class AgentLogic : Agent
 {
     [SerializeField] private GameObject packageTransform;
-    [SerializeField] private Transform dropPointTransform;
+    [SerializeField] private GameObject dropPointTransform;
     [SerializeField] private Material winMaterial;
     [SerializeField] private Material loseMaterial;
     [SerializeField] private MeshRenderer floorMeshRenderer;
     public bool gotPackage;
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(9,0,-9);
+        transform.localPosition = new Vector3(7.5f,0,-7.5f);
         packageTransform.transform.localPosition = new Vector3(Random.Range(-9f, 9f), 0, Random.Range(-8f , 8f));
         gotPackage = false;
         packageTransform.SetActive(true);
@@ -23,8 +23,11 @@ public class AgentLogic : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
+        sensor.AddObservation(gotPackage);
         sensor.AddObservation(transform.localPosition);
         sensor.AddObservation(packageTransform.transform.localPosition);
+        sensor.AddObservation(dropPointTransform.transform.localPosition);
+        
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
