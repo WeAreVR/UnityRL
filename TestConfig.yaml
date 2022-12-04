@@ -20,10 +20,10 @@ behaviors:
         strength: 1.0
       gail:
         strength: 0.1
-        demo_path: Demos/TestNewScale_0.demo
+        demo_path: Demos/TestNewEnv.demo
     behavioral_cloning:
         strength: 0.1
-        demo_path: Demos/TestNewScale_0.demo
-    max_steps: 500000
+        demo_path: Demos/TestNewEnv.demo
+    max_steps: 5000000
     time_horizon: 64
     summary_freq: 10000

@@ -8,7 +8,7 @@ public class TableCollisonCheck : MonoBehaviour
 {
     //rename class
     private GameObject obj;
-    public int packageNumber;
+    public int packageNumber = -1;
 
 
    

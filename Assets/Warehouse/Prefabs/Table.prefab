@@ -595,6 +595,7 @@ GameObject:
   - component: {fileID: 7899911674709485689}
   - component: {fileID: 3871167548071508613}
   - component: {fileID: 8146786309267648585}
+  - component: {fileID: 7200373193074254753}
   m_Layer: 0
   m_Name: Table
   m_TagString: Table
@@ -672,8 +673,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 9.1183605, y: 20.185226, z: 16.728247}
-  m_Center: {x: 0.69294024, y: 11.625938, z: 0.9297247}
+  m_Size: {x: 7.265699, y: 20.185225, z: 13.556533}
+  m_Center: {x: 0.6275237, y: 11.625939, z: 1.0394294}
 --- !u!54 &8146786309267648585
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -690,6 +691,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!65 &7200373193074254753
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3513785771432952760}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.165699, y: 20.08522, z: 13.45653}
+  m_Center: {x: 0.6275237, y: 11.625941, z: 1.0394287}
 --- !u!1 &4246281564866902609
 GameObject:
   m_ObjectHideFlags: 0

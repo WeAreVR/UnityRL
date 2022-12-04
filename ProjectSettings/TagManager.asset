@@ -23,6 +23,10 @@ TagManager:
   - Table0
   - TablePackage0
   - Ground
+  - 1
+  - 3
+  - 2
+  - 4
   layers:
   - Default
   - TransparentFX

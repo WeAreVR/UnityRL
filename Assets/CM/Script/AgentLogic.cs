@@ -15,8 +15,9 @@ public class AgentLogic : Agent
     public bool gotPackage;
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(0f,0,-3f);
+        transform.localPosition = new Vector3(Random.Range(-8f, 8f), 0, Random.Range(-3f, -8.5f));
         packageTransform.transform.localPosition = new Vector3(Random.Range(-9f, 9f), 0, Random.Range(-2f , 7f));
+        dropPointTransform.transform.localPosition = new Vector3(Random.Range(-9f, 9f), 0, 8);
         gotPackage = false;
         packageTransform.SetActive(true);
         //packageTransform.localPosition = new Vector3(9,0,9);
@@ -53,7 +54,7 @@ public class AgentLogic : Agent
     {
         if (other.TryGetComponent<Package>(out Package package) && gotPackage == false)
         {
-            AddReward(0.5f);
+            AddReward(1f);
             gotPackage = true;
             packageTransform.SetActive(false);
         }

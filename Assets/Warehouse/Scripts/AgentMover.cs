@@ -26,11 +26,13 @@ public class AgentMover : Agent
     public Material changeMaterial;
     private List<GameObject> listOfTables = new List<GameObject>();
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
+    private List<GameObject> ports = new List<GameObject>();
     private SpawnTable settings;
     private bool isColliding = false;
     public int agentSpeed = 1;
     public GameObject plane;
     public RayPerceptionOutput.RayOutput[] RayOutputs;
+    public GameObject winIndicator;
     public Material winMaterial;
     public Material LoseMaterial;
     public int steps;
@@ -42,7 +44,7 @@ public class AgentMover : Agent
         steps++;
         if ( steps % MaxStep == 0)
         {
-            plane.GetComponent<MeshRenderer>().material = LoseMaterial;
+            winIndicator.GetComponent<MeshRenderer>().material = LoseMaterial;
             steps = 0;
             //EndEpisode();
             //Debug.Log(Academy.Instance.StepCount);
@@ -59,7 +61,7 @@ public class AgentMover : Agent
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_BehaviorParameters = gameObject.transform.GetComponent<BehaviorParameters>();
         //m_SpawnTable = FindObjectOfType<SpawnTable>();
-        settings = transform.root.GetComponent<SpawnTable>(); ;
+        settings = transform.root.GetComponent<SpawnTable>();
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         //Get back with smart way to do this
         //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
@@ -67,7 +69,7 @@ public class AgentMover : Agent
         //
 
         //3 for transform og 2 for de andre
-        numberOfVectorsInTablesWithPair = m_EnvironmentSettings.numberOfTables * 2;
+        numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 5;
 
 
@@ -103,9 +105,11 @@ public class AgentMover : Agent
     {
         //Package on top of the agent
         setActivatePackage.SetActive(false);
+        m_AgentRb.velocity = Vector3.zero;
+        m_AgentRb.angularVelocity = Vector3.zero;
         //clear list so we we dont get double
-        ClearAndDestoryList(listOfTablesWithPackge);
-        ClearAndDestoryList(listOfTables);
+        //ClearAndDestoryList(listOfTablesWithPackge);
+        //ClearAndDestoryList(listOfTables);
         //Instantiate all the tables
         m_SpawnTable.SpawnTables();
 
@@ -113,6 +117,7 @@ public class AgentMover : Agent
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
         listOfTablesWithPackge = settings.packages;
+        ports = settings.ports;
         
         //trashy way to make sure tables are spawned before adding them to the list 
         //Invoke("addToList", 0.2f);
@@ -121,8 +126,8 @@ public class AgentMover : Agent
         //_controller.transform.position = plane.transform.position;
         //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
         //_controller.enabled = true;
-        transform.localPosition = plane.transform.localPosition;
-        transform.localRotation = Quaternion.Euler(new Vector3(0, 180, -10));
+        transform.localPosition = plane.transform.localPosition + new Vector3(5,0,0);
+        transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
         //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
@@ -132,7 +137,7 @@ public class AgentMover : Agent
         
         //
         // Denne funktion skal kun køres når vi kun vil teste et bord
-        setStartPackage();
+       // setStartPackage();
         //
 
 
@@ -147,7 +152,7 @@ public class AgentMover : Agent
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
         
-        for (int i = 0; i < listOfTables.Count; i++)
+        for (int i = 0; i < listOfTablesWithPackge.Count; i++)
         {
             /* No need for y since it is never used i think
             sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
@@ -156,20 +161,23 @@ public class AgentMover : Agent
             sensor.AddObservation(listOfTables[i].transform.position.z);
             */
             
-            var dirToTable = (listOfTables[i].transform.localPosition - transform.localPosition).normalized;
             var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
             //kig på det her 
 
             //sensor.AddObservation(listOfTables[i].transform.localPosition);
             //sensor.AddObservation(listOfTablesWithPackge[i].transform.localPosition);
             
-            //sensor.AddObservation(dirToPackage.x);
-            //sensor.AddObservation(dirToPackage.z);
-            sensor.AddObservation(dirToTable.x);
-            sensor.AddObservation(dirToTable.z);
+            sensor.AddObservation(dirToPackage.x);
+            sensor.AddObservation(dirToPackage.z);
+        }
+        for (int i = 0; i < ports.Count; i++)
+        {
+            var dirToPort = (ports[i].transform.localPosition - transform.localPosition).normalized;
+            sensor.AddObservation(dirToPort.x);
+            sensor.AddObservation(dirToPort.z);
 
         }
-     
+
     }
     
         
@@ -262,9 +270,9 @@ public class AgentMover : Agent
             gotPackage = true;
             setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
         }
-       
 
-        if (other.tag == "Table" && gotPackage == true)
+
+        if ((other.tag == "1"|| other.tag == "2" || other.tag == "3"|| other.tag == "4") && gotPackage == true)
         {
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
@@ -272,7 +280,7 @@ public class AgentMover : Agent
                 AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
-                plane.GetComponent<MeshRenderer>().material = winMaterial;
+                winIndicator.GetComponent<MeshRenderer>().material = winMaterial;
                 /*
                 //virker ikke fjener ikke fra liste
                 listOfTablesWithPackge.Remove(other.gameObject);
@@ -286,10 +294,10 @@ public class AgentMover : Agent
                 // other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject);
                 //other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject, tableTargetPrefab);
                 //m_SpawnTable.ItemDelivered(other.gameObject);
-                m_SpawnTable.ItemDelivered(other.gameObject, tableTargetPrefab);
+                m_SpawnTable.RemoveMat(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
-                if (listOfTables.Count == 0)
+                if (listOfTablesWithPackge.Count == 0)
                 {
                     EndEpisode();
                 }
