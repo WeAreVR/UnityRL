@@ -15,22 +15,28 @@ public class AgentLogic : Agent
     public bool gotPackage;
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(7.5f,0,-7.5f);
-        packageTransform.transform.localPosition = new Vector3(Random.Range(-9f, 9f), 0, Random.Range(-8f , 8f));
+        transform.localPosition = new Vector3(0f,0,-3f);
+        packageTransform.transform.localPosition = new Vector3(Random.Range(-9f, 9f), 0, Random.Range(-2f , 7f));
         gotPackage = false;
         packageTransform.SetActive(true);
         //packageTransform.localPosition = new Vector3(9,0,9);
     }
     public override void CollectObservations(VectorSensor sensor)
     {
+        var dirToPackage = (transform.localPosition - packageTransform.transform.localPosition).normalized;
+        var dirToDropPoint = (transform.localPosition - dropPointTransform.transform.localPosition).normalized;
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(transform.localPosition);
+        //sensor.AddObservation(transform.localPosition.z);
         sensor.AddObservation(packageTransform.transform.localPosition);
+        //sensor.AddObservation(dirToPackage.z);
         sensor.AddObservation(dropPointTransform.transform.localPosition);
-        
+        //sensor.AddObservation(dirToDropPoint.z);
+
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
+        AddReward(-1f / MaxStep);
         float moveX = actions.ContinuousActions[0];
         float moveZ = actions.ContinuousActions[1];
 
@@ -53,13 +59,13 @@ public class AgentLogic : Agent
         }
         if ((other.TryGetComponent<DropPoint>(out DropPoint dropPoint) && gotPackage))
         {
-            AddReward(0.5f);
+            AddReward(1f);
             floorMeshRenderer.material = winMaterial;
             EndEpisode();
         }
         if (other.TryGetComponent<Wall>(out Wall wall))
         {
-            SetReward(-1f);
+            AddReward(-0.5f);
             floorMeshRenderer.material = loseMaterial;
             EndEpisode();
         }

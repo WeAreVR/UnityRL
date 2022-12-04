@@ -1,29 +1,47 @@
 {
-    "MoveToTables": {
+    "MTG": {
         "checkpoints": [
             {
-                "steps": 195471,
-                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-195471.onnx",
-                "reward": -0.9986667558550835,
-                "creation_time": 1670063126.3074331,
+                "steps": 499986,
+                "file_path": "results\\ppo\\MTG\\MTG-499986.onnx",
+                "reward": -0.08681482959676672,
+                "creation_time": 1670156375.2846634,
                 "auxillary_file_paths": [
-                    "results\\ppo\\MoveToTables\\MoveToTables-195471.pt"
+                    "results\\ppo\\MTG\\MTG-499986.pt"
+                ]
+            },
+            {
+                "steps": 500050,
+                "file_path": "results\\ppo\\MTG\\MTG-500050.onnx",
+                "reward": -0.08681482959676672,
+                "creation_time": 1670156375.361681,
+                "auxillary_file_paths": [
+                    "results\\ppo\\MTG\\MTG-500050.pt"
+                ]
+            },
+            {
+                "steps": 500050,
+                "file_path": "results\\ppo\\MTG\\MTG-500050.onnx",
+                "reward": null,
+                "creation_time": 1670156436.0869896,
+                "auxillary_file_paths": [
+                    "results\\ppo\\MTG\\MTG-500050.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 195471,
-            "file_path": "results\\ppo\\MoveToTables.onnx",
-            "reward": -0.9986667558550835,
-            "creation_time": 1670063126.3074331,
+            "steps": 500050,
+            "file_path": "results\\ppo\\MTG.onnx",
+            "reward": null,
+            "creation_time": 1670156436.0869896,
             "auxillary_file_paths": [
-                "results\\ppo\\MoveToTables\\MoveToTables-195471.pt"
+                "results\\ppo\\MTG\\MTG-500050.pt"
             ]
         }
     },
     "metadata": {
         "stats_format_version": "0.3.0",
-        "mlagents_version": "0.30.0",
+        "mlagents_version": "0.29.0",
         "torch_version": "1.12.1+cu116"
     }
 }
