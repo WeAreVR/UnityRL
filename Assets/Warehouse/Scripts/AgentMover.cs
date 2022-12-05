@@ -57,7 +57,7 @@ public class AgentMover : Agent
     {
         // _controller = gameObject.GetComponent<CharacterController>();
         // _controller.center = new Vector3(0, 2.5f, 0);
-        m_BufferSensor = GetComponent<BufferSensorComponent>();
+        //m_BufferSensor = GetComponent<BufferSensorComponent>();
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
@@ -72,7 +72,8 @@ public class AgentMover : Agent
 
         //3 for transform og 2 for de andre
         //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
-        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
+        //m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5;
         //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
@@ -128,7 +129,7 @@ public class AgentMover : Agent
         //_controller.transform.position = plane.transform.position;
         //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
         //_controller.enabled = true;
-        transform.localPosition = plane.transform.localPosition + new Vector3(5,0,0);
+        transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
         transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
         //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -148,47 +149,48 @@ public class AgentMover : Agent
     {
         //mlagent sorter kan måske være relevant
         // BufferSensorComponent.AppendObservation(5.0f);
-        sensor.AddObservation(transform.localPosition.x);
-        sensor.AddObservation(transform.localPosition.z);
-        sensor.AddObservation(transform.rotation.z);
+        //sensor.AddObservation(transform.localPosition.x);
+        //sensor.AddObservation(transform.localPosition.z);
+        //sensor.AddObservation(transform.rotation.z);
+        sensor.AddObservation(transform.InverseTransformDirection(m_AgentRb.velocity));
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
-        
-        for (int i = 0; i < listOfTablesWithPackge.Count; i++)
-        {
-            /* No need for y since it is never used i think
-            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
-            sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
-            sensor.AddObservation(listOfTables[i].transform.position.x);
-            sensor.AddObservation(listOfTables[i].transform.position.z);
-            */
-            
-            var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
-            //kig på det her 
 
-            //sensor.AddObservation(listOfTables[i].transform.localPosition);
-            //sensor.AddObservation(listOfTablesWithPackge[i].transform.localPosition);
-            
-            //sensor.AddObservation(dirToPackage.x);
-            //sensor.AddObservation(dirToPackage.z);
-            float[] packageObservation = new float[]
-            {
-                dirToPackage.x,
-                dirToPackage.z
-            };
+        //for (int i = 0; i < listOfTablesWithPackge.Count; i++)
+        //{
+        //    /* No need for y since it is never used i think
+        //    sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
+        //    sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
+        //    sensor.AddObservation(listOfTables[i].transform.position.x);
+        //    sensor.AddObservation(listOfTables[i].transform.position.z);
+        //    */
 
-            m_BufferSensor.AppendObservation(packageObservation);
-        }
-        //m_BufferSensor.AppendObservation(dirToPackage.x);
-        for (int i = 0; i < ports.Count; i++)
-        {
-            
-            var dirToPort = (ports[i].transform.localPosition - transform.localPosition).normalized;
-            
-            sensor.AddObservation(dirToPort.x);
-            sensor.AddObservation(dirToPort.z);
-            
-        }
+        //    var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
+        //    //kig på det her 
+
+        //    //sensor.AddObservation(listOfTables[i].transform.localPosition);
+        //    //sensor.AddObservation(listOfTablesWithPackge[i].transform.localPosition);
+
+        //    //sensor.AddObservation(dirToPackage.x);
+        //    //sensor.AddObservation(dirToPackage.z);
+        //    float[] packageObservation = new float[]
+        //    {
+        //        dirToPackage.x,
+        //        dirToPackage.z
+        //    };
+
+        //    m_BufferSensor.AppendObservation(packageObservation);
+        //}
+        ////m_BufferSensor.AppendObservation(dirToPackage.x);
+        //for (int i = 0; i < ports.Count; i++)
+        //{
+
+        //    var dirToPort = (ports[i].transform.localPosition - transform.localPosition).normalized;
+
+        //    sensor.AddObservation(dirToPort.x);
+        //    sensor.AddObservation(dirToPort.z);
+
+        //}
 
     }
     

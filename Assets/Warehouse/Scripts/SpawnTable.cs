@@ -83,6 +83,13 @@ public class SpawnTable : MonoBehaviour
             int packageNumber = Random.Range(0, randomMaterials.Length);
 
             tablePrefab = rows[randomNumber];
+            //tablePrefab.layer =LayerMask.NameToLayer("Package");;
+            tablePrefab.layer = 3;
+            foreach (Transform child in tablePrefab.transform)
+            {
+                child.gameObject.layer = 3;
+            }
+
             packages.Add(tablePrefab);
             ChangeMaterial(randomMaterials[packageNumber], tablePrefab, "TablePackage", packageNumber);
             rows.Remove(rows[randomNumber]);
@@ -105,9 +112,14 @@ public class SpawnTable : MonoBehaviour
     {
 
         var children = obj.GetComponentsInChildren<Renderer>();
+        obj.tag = "wall";
+        obj.layer = 0;
+
         foreach (Renderer rend in children)
         {
             rend.tag = "wall";
+            rend.gameObject.layer = 0;
+
             rend.material.color = Color.white;
 
         }
