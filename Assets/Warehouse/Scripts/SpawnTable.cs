@@ -98,6 +98,7 @@ public class SpawnTable : MonoBehaviour
         {
             RemoveMat(packages[i]);
         }
+        packages.Clear();
 
     }
     public void RemoveMat(GameObject obj)

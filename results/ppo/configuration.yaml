@@ -49,7 +49,7 @@ behaviors:
         encoding_size: null
         use_actions: false
         use_vail: false
-        demo_path: Demos/TestNewEnv.demo
+        demo_path: Demos/TestNewEnv_0.demo
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
@@ -59,7 +59,7 @@ behaviors:
     threaded: false
     self_play: null
     behavioral_cloning:
-      demo_path: Demos/TestNewEnv.demo
+      demo_path: Demos/TestNewEnv_0.demo
       steps: 0
       strength: 0.1
       samples_per_update: 0

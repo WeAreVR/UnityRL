@@ -1,26 +1,4 @@
 {
-    "MoveToTables": {
-        "checkpoints": [
-            {
-                "steps": 21632,
-                "file_path": "results\\ppo\\MoveToTables\\MoveToTables-21632.onnx",
-                "reward": null,
-                "creation_time": 1670189841.7999287,
-                "auxillary_file_paths": [
-                    "results\\ppo\\MoveToTables\\MoveToTables-21632.pt"
-                ]
-            }
-        ],
-        "final_checkpoint": {
-            "steps": 21632,
-            "file_path": "results\\ppo\\MoveToTables.onnx",
-            "reward": null,
-            "creation_time": 1670189841.7999287,
-            "auxillary_file_paths": [
-                "results\\ppo\\MoveToTables\\MoveToTables-21632.pt"
-            ]
-        }
-    },
     "metadata": {
         "stats_format_version": "0.3.0",
         "mlagents_version": "0.30.0",

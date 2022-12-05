@@ -14,6 +14,7 @@ public class AgentMover : Agent
     private EnvironmentSettings m_EnvironmentSettings;
     private BehaviorParameters m_BehaviorParameters;
     public SpawnTable m_SpawnTable;
+    BufferSensorComponent m_BufferSensor;
 
     [SerializeField] private GameObject setActivatePackage;
 
@@ -54,8 +55,9 @@ public class AgentMover : Agent
 
     public override void Initialize()
     {
-       // _controller = gameObject.GetComponent<CharacterController>();
-       // _controller.center = new Vector3(0, 2.5f, 0);
+        // _controller = gameObject.GetComponent<CharacterController>();
+        // _controller.center = new Vector3(0, 2.5f, 0);
+        m_BufferSensor = GetComponent<BufferSensorComponent>();
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
@@ -71,7 +73,8 @@ public class AgentMover : Agent
         //3 for transform og 2 for de andre
         numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 5;
-
+        m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
+        Debug.Log(settings.rows.Count * 2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
         //Delay because it tables are not spawned yet
@@ -144,8 +147,9 @@ public class AgentMover : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-       
+        float[] packageObservation;
         //mlagent sorter kan måske være relevant
+        // BufferSensorComponent.AppendObservation(5.0f);
         sensor.AddObservation(transform.localPosition.x);
         sensor.AddObservation(transform.localPosition.z);
         sensor.AddObservation(transform.rotation.z);
@@ -169,13 +173,22 @@ public class AgentMover : Agent
             
             sensor.AddObservation(dirToPackage.x);
             sensor.AddObservation(dirToPackage.z);
+            packageObservation = new float[]
+            {
+                dirToPackage.x,
+                dirToPackage.z
+            };
+            m_BufferSensor.AppendObservation(packageObservation);
         }
+        //m_BufferSensor.AppendObservation(dirToPackage.x);
         for (int i = 0; i < ports.Count; i++)
         {
+            
             var dirToPort = (ports[i].transform.localPosition - transform.localPosition).normalized;
+            
             sensor.AddObservation(dirToPort.x);
             sensor.AddObservation(dirToPort.z);
-
+            
         }
 
     }
