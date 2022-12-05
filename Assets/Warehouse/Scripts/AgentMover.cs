@@ -71,10 +71,9 @@ public class AgentMover : Agent
         //
 
         //3 for transform og 2 for de andre
-        numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
-        m_BehaviorParameters.BrainParameters.VectorObservationSize = numberOfVectorsInTablesWithPair + 5;
-        m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
-        Debug.Log(settings.rows.Count * 2);
+        //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
+        //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
         //Delay because it tables are not spawned yet
@@ -147,7 +146,6 @@ public class AgentMover : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        float[] packageObservation;
         //mlagent sorter kan måske være relevant
         // BufferSensorComponent.AppendObservation(5.0f);
         sensor.AddObservation(transform.localPosition.x);
@@ -171,13 +169,14 @@ public class AgentMover : Agent
             //sensor.AddObservation(listOfTables[i].transform.localPosition);
             //sensor.AddObservation(listOfTablesWithPackge[i].transform.localPosition);
             
-            sensor.AddObservation(dirToPackage.x);
-            sensor.AddObservation(dirToPackage.z);
-            packageObservation = new float[]
+            //sensor.AddObservation(dirToPackage.x);
+            //sensor.AddObservation(dirToPackage.z);
+            float[] packageObservation = new float[]
             {
                 dirToPackage.x,
                 dirToPackage.z
             };
+
             m_BufferSensor.AppendObservation(packageObservation);
         }
         //m_BufferSensor.AppendObservation(dirToPackage.x);
@@ -285,7 +284,7 @@ public class AgentMover : Agent
         }
 
 
-        if ((other.tag == "1"|| other.tag == "2" || other.tag == "3"|| other.tag == "4") && gotPackage == true)
+        if ((other.tag == "0"|| other.tag == "1" || other.tag == "2"|| other.tag == "3") && gotPackage == true)
         {
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {

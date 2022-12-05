@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 8049413494602440648}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -291,7 +291,7 @@ GameObject:
   - component: {fileID: 6237659480018592508}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: 2
+  m_TagString: 1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -402,7 +402,7 @@ GameObject:
   - component: {fileID: 6237659480152639620}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: 3
+  m_TagString: 2
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -513,7 +513,7 @@ GameObject:
   - component: {fileID: 6237659479486822289}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: 1
+  m_TagString: 0
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -655,7 +655,7 @@ GameObject:
   - component: {fileID: 6237659481321375510}
   m_Layer: 0
   m_Name: Cube (4)
-  m_TagString: 4
+  m_TagString: 3
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -830,7 +830,7 @@ GameObject:
   - component: {fileID: 508562093903841418}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -927,7 +927,7 @@ GameObject:
   - component: {fileID: 3102196527173808840}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1024,7 +1024,7 @@ GameObject:
   - component: {fileID: 8600554285068643469}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2091,6 +2091,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2363151882968165792}
     m_Modifications:
+    - target: {fileID: 2457644688087795385, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2463313584326214896, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: plane
       value: 
@@ -2129,11 +2133,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4757686713584108505, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.09
+      value: 1.58
       objectReference: {fileID: 0}
     - target: {fileID: 4757686713584108505, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2.26
       objectReference: {fileID: 0}
     - target: {fileID: 4757686713584108505, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2167,6 +2171,10 @@ PrefabInstance:
       propertyPath: m_BehaviorType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6081727517736060530, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
 --- !u!1 &2363151882529637872 stripped
@@ -2188,12 +2196,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor
   m_DetectableTags:
-  - TablePackage
-  - 1
+  - 0
   - wall
+  - 1
   - 2
   - 3
-  - 4
   m_RaysPerDirection: 14
   m_MaxRayDegrees: 180
   m_SphereCastRadius: 0.5
@@ -2219,8 +2226,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SensorName: BufferSensor
-  m_ObservableSize: 0
-  m_MaxNumObservables: 0
+  m_ObservableSize: 2
+  m_MaxNumObservables: 24
+--- !u!114 &8281767821982905804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2363151882529637872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SensorName: Emil
+  m_DetectableTags:
+  - TablePackage
+  m_RaysPerDirection: 14
+  m_MaxRayDegrees: 171
+  m_SphereCastRadius: 0.5
+  m_RayLength: 60
+  m_RayLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  m_ObservationStacks: 1
+  rayHitColor: {r: 0.14149547, g: 1, b: 0, a: 1}
+  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
+  m_StartVerticalOffset: 0
+  m_EndVerticalOffset: 0.1
 --- !u!4 &2363151882529637873 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4757686713584108505, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}

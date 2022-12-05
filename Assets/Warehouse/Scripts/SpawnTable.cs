@@ -107,7 +107,9 @@ public class SpawnTable : MonoBehaviour
         var children = obj.GetComponentsInChildren<Renderer>();
         foreach (Renderer rend in children)
         {
+            rend.tag = "wall";
             rend.material.color = Color.white;
+
         }
         
         obj.GetComponent<TableCollisonCheck>().packageNumber = -1;
