@@ -1,0 +1,56 @@
+{
+    "MoveToTables": {
+        "checkpoints": [
+            {
+                "steps": 499968,
+                "file_path": "results\\TestConfig\\MoveToTables\\MoveToTables-499968.onnx",
+                "reward": -0.6250000549480319,
+                "creation_time": 1670322771.0113277,
+                "auxillary_file_paths": [
+                    "results\\TestConfig\\MoveToTables\\MoveToTables-499968.pt"
+                ]
+            },
+            {
+                "steps": 500224,
+                "file_path": "results\\TestConfig\\MoveToTables\\MoveToTables-500224.onnx",
+                "reward": -0.6250000549480319,
+                "creation_time": 1670322771.18737,
+                "auxillary_file_paths": [
+                    "results\\TestConfig\\MoveToTables\\MoveToTables-500224.pt"
+                ]
+            },
+            {
+                "steps": 500224,
+                "file_path": "results\\TestConfig\\MoveToTables\\MoveToTables-500224.onnx",
+                "reward": null,
+                "creation_time": 1670323766.2045174,
+                "auxillary_file_paths": [
+                    "results\\TestConfig\\MoveToTables\\MoveToTables-500224.pt"
+                ]
+            },
+            {
+                "steps": 500224,
+                "file_path": "results\\TestConfig\\MoveToTables\\MoveToTables-500224.onnx",
+                "reward": null,
+                "creation_time": 1670324048.3820484,
+                "auxillary_file_paths": [
+                    "results\\TestConfig\\MoveToTables\\MoveToTables-500224.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500224,
+            "file_path": "results\\TestConfig\\MoveToTables.onnx",
+            "reward": null,
+            "creation_time": 1670324048.3820484,
+            "auxillary_file_paths": [
+                "results\\TestConfig\\MoveToTables\\MoveToTables-500224.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}
