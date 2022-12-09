@@ -265,10 +265,10 @@ public class AgentMover : Agent
         isColliding = true;
         //Transform firstChild = other.transform.GetChild(0);
 
-        if (other.tag == "wall" || other.tag == "agent")
+        if (other.tag == "wall" || other.tag == "Agent")
         {
-
-            //AddReward(-1f);
+            Debug.Log("Bad robot");
+            //AddReward(-0.1f);
             //EndEpisode();
         }
         if (other.tag == "TablePackage" && gotPackage == false)
@@ -283,6 +283,7 @@ public class AgentMover : Agent
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
             gotPackage = true;
             setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
+            m_SpawnTable.RemoveMat(tableTargetPrefab);
         }
 
 
@@ -308,7 +309,6 @@ public class AgentMover : Agent
                 // other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject);
                 //other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject, tableTargetPrefab);
                 //m_SpawnTable.ItemDelivered(other.gameObject);
-                m_SpawnTable.RemoveMat(tableTargetPrefab);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
                 if (listOfTablesWithPackge.Count == 0)

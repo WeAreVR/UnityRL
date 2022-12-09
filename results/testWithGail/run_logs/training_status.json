@@ -1,0 +1,65 @@
+{
+    "MoveToTables": {
+        "checkpoints": [
+            {
+                "steps": 2999975,
+                "file_path": "results\\testWithGail\\MoveToTables\\MoveToTables-2999975.onnx",
+                "reward": null,
+                "creation_time": 1670503790.578182,
+                "auxillary_file_paths": [
+                    "results\\testWithGail\\MoveToTables\\MoveToTables-2999975.pt"
+                ]
+            },
+            {
+                "steps": 3098589,
+                "file_path": "results\\testWithGail\\MoveToTables\\MoveToTables-3098589.onnx",
+                "reward": 2.46883350238204,
+                "creation_time": 1670504209.5270014,
+                "auxillary_file_paths": [
+                    "results\\testWithGail\\MoveToTables\\MoveToTables-3098589.pt"
+                ]
+            },
+            {
+                "steps": 3499936,
+                "file_path": "results\\testWithGail\\MoveToTables\\MoveToTables-3499936.onnx",
+                "reward": 2.5576668456196785,
+                "creation_time": 1670528321.9343882,
+                "auxillary_file_paths": [
+                    "results\\testWithGail\\MoveToTables\\MoveToTables-3499936.pt"
+                ]
+            },
+            {
+                "steps": 3999994,
+                "file_path": "results\\testWithGail\\MoveToTables\\MoveToTables-3999994.onnx",
+                "reward": 2.7216668171542033,
+                "creation_time": 1670529546.7064896,
+                "auxillary_file_paths": [
+                    "results\\testWithGail\\MoveToTables\\MoveToTables-3999994.pt"
+                ]
+            },
+            {
+                "steps": 4411550,
+                "file_path": "results\\testWithGail\\MoveToTables\\MoveToTables-4411550.onnx",
+                "reward": 2.612375108525157,
+                "creation_time": 1670530671.7046778,
+                "auxillary_file_paths": [
+                    "results\\testWithGail\\MoveToTables\\MoveToTables-4411550.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 4411550,
+            "file_path": "results\\testWithGail\\MoveToTables.onnx",
+            "reward": 2.612375108525157,
+            "creation_time": 1670530671.7046778,
+            "auxillary_file_paths": [
+                "results\\testWithGail\\MoveToTables\\MoveToTables-4411550.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.12.1+cu116"
+    }
+}
