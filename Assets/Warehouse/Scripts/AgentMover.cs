@@ -16,7 +16,7 @@ public class AgentMover : Agent
     public SpawnTable m_SpawnTable;
     BufferSensorComponent m_BufferSensor;
 
-    [SerializeField] private GameObject setActivatePackage;
+    [SerializeField] public GameObject setActivatePackage;
 
     [SerializeField] private CharacterController _controller;
     public bool gotPackage;
@@ -28,16 +28,18 @@ public class AgentMover : Agent
     private List<GameObject> listOfTables = new List<GameObject>();
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
     private List<GameObject> ports = new List<GameObject>();
+    private List<GameObject> agents = new List<GameObject>();
     private SpawnTable settings;
     private bool isColliding = false;
     public int agentSpeed = 1;
     public GameObject plane;
     public RayPerceptionOutput.RayOutput[] RayOutputs;
-    public GameObject winIndicator;
     public Material winMaterial;
     public Material LoseMaterial;
     public int steps;
+    private IEnumerator coroutine;
     //public GameObject plane;
+    private EnvironmentController m_EnvironmentController;
 
     void FixedUpdate()
     {
@@ -45,7 +47,6 @@ public class AgentMover : Agent
         steps++;
         if ( steps % MaxStep == 0)
         {
-            winIndicator.GetComponent<MeshRenderer>().material = LoseMaterial;
             steps = 0;
             //EndEpisode();
             //Debug.Log(Academy.Instance.StepCount);
@@ -58,10 +59,12 @@ public class AgentMover : Agent
         // _controller = gameObject.GetComponent<CharacterController>();
         // _controller.center = new Vector3(0, 2.5f, 0);
         //m_BufferSensor = GetComponent<BufferSensorComponent>();
+        m_EnvironmentController = FindObjectOfType<EnvironmentController>();
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_BehaviorParameters = gameObject.transform.GetComponent<BehaviorParameters>();
+        
         //m_SpawnTable = FindObjectOfType<SpawnTable>();
         settings = transform.root.GetComponent<SpawnTable>();
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
@@ -104,47 +107,47 @@ public class AgentMover : Agent
 
     }
 
-    public override void OnEpisodeBegin()
-    {
-        //Package on top of the agent
-        setActivatePackage.SetActive(false);
-        m_AgentRb.velocity = Vector3.zero;
-        m_AgentRb.angularVelocity = Vector3.zero;
-        //clear list so we we dont get double
-        //ClearAndDestoryList(listOfTablesWithPackge);
-        //ClearAndDestoryList(listOfTables);
-        //Instantiate all the tables
-        m_SpawnTable.SpawnTables();
+    //public override void OnEpisodeBegin()
+    //{
+    //    //Package on top of the agent
+    //    setActivatePackage.SetActive(false);
+    //    m_AgentRb.velocity = Vector3.zero;
+    //    m_AgentRb.angularVelocity = Vector3.zero;
+    //    //clear list so we we dont get double
+    //    //ClearAndDestoryList(listOfTablesWithPackge);
+    //    //ClearAndDestoryList(listOfTables);
+    //    //Instantiate all the tables
+    //    m_SpawnTable.SpawnTables();
 
         
-        //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
-        listOfTables = settings.tables;
-        listOfTablesWithPackge = settings.packages;
-        ports = settings.ports;
+    //    //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
+    //    listOfTables = settings.tables;
+    //    listOfTablesWithPackge = settings.packages;
+    //    ports = settings.ports;
         
-        //trashy way to make sure tables are spawned before adding them to the list 
-        //Invoke("addToList", 0.2f);
-        //_controller.enabled = false;
-        //_controller.transform.position = plane.transform.position;
-        //_controller.transform.position = plane.transform.position;
-        //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
-        //_controller.enabled = true;
-        transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
-        transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-        //GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
-        //targetTransform.localPosition = new Vector3(0, 2, -2);
-        gotPackage = false;
-        whichPackage = -1;
+    //    //trashy way to make sure tables are spawned before adding them to the list 
+    //    //Invoke("addToList", 0.2f);
+    //    //_controller.enabled = false;
+    //    //_controller.transform.position = plane.transform.position;
+    //    //_controller.transform.position = plane.transform.position;
+    //    //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
+    //    //_controller.enabled = true;
+    //    transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
+    //    transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
+    //    //GetComponent<Rigidbody>().velocity = Vector3.zero;
+    //    //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+    //    //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
+    //    //targetTransform.localPosition = new Vector3(0, 2, -2);
+    //    gotPackage = false;
+    //    whichPackage = -1;
         
-        //
-        // Denne funktion skal kun køres når vi kun vil teste et bord
-       // setStartPackage();
-        //
+    //    //
+    //    // Denne funktion skal kun køres når vi kun vil teste et bord
+    //   // setStartPackage();
+    //    //
 
 
-    }
+    //}
     public override void CollectObservations(VectorSensor sensor)
     {
         //mlagent sorter kan måske være relevant
@@ -199,8 +202,6 @@ public class AgentMover : Agent
     
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        //steps++;
-        AddReward(-1f / MaxStep);
         MoveAgent(actionBuffers.DiscreteActions);
 
     }
@@ -274,17 +275,21 @@ public class AgentMover : Agent
         if (other.tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
-            AddReward(0.5f);
+            tableTargetPrefab.tag = "wall";
+            m_EnvironmentController.m_AgentGroup.AddGroupReward(0.5f);
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
             //super trashy m�de at g�re det p� f�ler jeg men det virker
-            GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
-            changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
+            setActivatePackage.GetComponent<Renderer>().material.CopyPropertiesFromMaterial(other.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material);
             gotPackage = true;
-            setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
-            m_SpawnTable.RemoveMat(tableTargetPrefab);
-        }
+            settings.RemoveMat(tableTargetPrefab);
+        
+
+        
+    }
+
+   
 
 
         if ((other.tag == "0"|| other.tag == "1" || other.tag == "2"|| other.tag == "3") && gotPackage == true)
@@ -292,18 +297,16 @@ public class AgentMover : Agent
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
                 steps = 0;
-                AddReward(1f);
+                m_EnvironmentController.m_AgentGroup.AddGroupReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
-                winIndicator.GetComponent<MeshRenderer>().material = winMaterial;
                 /*
                 //virker ikke fjener ikke fra liste
                 listOfTablesWithPackge.Remove(other.gameObject);
                 listOfTables.Remove(tableTargetPrefab);
                 */
                 //RemoveAt virker 
-                RemoveFromList(listOfTables, other.gameObject);
-                RemoveFromList(listOfTablesWithPackge, tableTargetPrefab);
+                RemoveFromList(settings.packages, tableTargetPrefab);
 
                 // other.GetComponent<TableCollisonCheck>().ItemDelivered(tableTargetPrefab);
                 // other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject);
@@ -311,10 +314,7 @@ public class AgentMover : Agent
                 //m_SpawnTable.ItemDelivered(other.gameObject);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
-                if (listOfTablesWithPackge.Count == 0)
-                {
-                    EndEpisode();
-                }
+               
             }
         }
 
