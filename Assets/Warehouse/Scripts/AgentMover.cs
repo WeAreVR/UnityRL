@@ -266,17 +266,21 @@ public class AgentMover : Agent
         isColliding = true;
         //Transform firstChild = other.transform.GetChild(0);
 
-        if (other.tag == "wall" || other.tag == "Agent")
+        if (other.tag == "wall")
         {
-            Debug.Log("Bad robot");
-            //AddReward(-0.1f);
-            //EndEpisode();
+
+        }
+        if (other.tag == "Agent")
+        {
+            m_EnvironmentController.m_AgentGroup.AddGroupReward(-0.2f);
         }
         if (other.tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
             tableTargetPrefab.tag = "wall";
             m_EnvironmentController.m_AgentGroup.AddGroupReward(0.5f);
+            //AddReward(0.5f);
+            Debug.Log("Got package");
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
@@ -284,10 +288,10 @@ public class AgentMover : Agent
             setActivatePackage.GetComponent<Renderer>().material.CopyPropertiesFromMaterial(other.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material);
             gotPackage = true;
             settings.RemoveMat(tableTargetPrefab);
-        
 
-        
-    }
+
+
+        }
 
    
 
@@ -298,8 +302,10 @@ public class AgentMover : Agent
             {
                 steps = 0;
                 m_EnvironmentController.m_AgentGroup.AddGroupReward(1f);
+                //AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
+                Debug.Log("Delivered package");
                 /*
                 //virker ikke fjener ikke fra liste
                 listOfTablesWithPackge.Remove(other.gameObject);

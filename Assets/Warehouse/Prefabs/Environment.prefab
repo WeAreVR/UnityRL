@@ -642,7 +642,7 @@ MonoBehaviour:
   Agent: {fileID: 4494110233119146367, guid: 9f509ccf44d078e4498456a5b36c4733, type: 3}
   AgentSpawnPoint: {fileID: 5681247923960096821}
   AgentSpawnPoints: []
-  MaxEnvironmentSteps: 25000
+  MaxEnvironmentSteps: 5000
 --- !u!1 &2015531263658522593
 GameObject:
   m_ObjectHideFlags: 0
