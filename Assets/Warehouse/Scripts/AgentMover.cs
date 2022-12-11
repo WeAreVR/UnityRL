@@ -77,7 +77,7 @@ public class AgentMover : Agent
         //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         //m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
 
-        m_BehaviorParameters.BrainParameters.VectorObservationSize = 2 + 9;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize = 2 + 3;
         //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
@@ -156,11 +156,11 @@ public class AgentMover : Agent
         //sensor.AddObservation(transform.localPosition.x);
         //sensor.AddObservation(transform.localPosition.z);
         //sensor.AddObservation(transform.rotation.z);
-        for (int i = 0; i < m_EnvironmentController.AgentsList.Count; i++)
+        /*for (int i = 0; i < m_EnvironmentController.AgentsList.Count; i++)
         {
             sensor.AddObservation(m_EnvironmentController.AgentsList[i].gameObject.transform.position);
         }
-
+        */
         sensor.AddObservation(transform.InverseTransformDirection(m_AgentRb.velocity));
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
@@ -278,14 +278,15 @@ public class AgentMover : Agent
         }
         if (other.tag == "Agent")
         {
-            m_EnvironmentController.m_AgentGroup.AddGroupReward(-0.2f);
+            Debug.Log("Agent collided");
+            m_EnvironmentController.AddReward(-0.1f);
         }
         if (other.tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
             tableTargetPrefab.tag = "wall";
-            m_EnvironmentController.m_AgentGroup.AddGroupReward(0.5f);
-            //AddReward(0.5f);
+            //m_EnvironmentController.m_AgentGroup.AddGroupReward(0.5f);
+            m_EnvironmentController.AddReward(0.5f);
             Debug.Log("Got package");
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
@@ -294,8 +295,6 @@ public class AgentMover : Agent
             setActivatePackage.GetComponent<Renderer>().material.CopyPropertiesFromMaterial(other.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material);
             gotPackage = true;
             settings.RemoveMat(tableTargetPrefab);
-
-
 
         }
 
@@ -308,8 +307,9 @@ public class AgentMover : Agent
             {
                 steps = 0;
                 
-                m_EnvironmentController.m_AgentGroup.AddGroupReward(1f);
+                //m_EnvironmentController.m_AgentGroup.AddGroupReward(1f);
                 //AddReward(1f);
+                m_EnvironmentController.AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
                 Debug.Log("Delivered package");
