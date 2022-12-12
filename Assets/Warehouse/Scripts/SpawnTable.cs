@@ -136,6 +136,7 @@ public class SpawnTable : MonoBehaviour
         children = obj.GetComponentsInChildren<Renderer>();
         obj.GetComponent<TableCollisonCheck>().packageNumber = number;
 
+        //NOTE: vi slettet +packageNumber i linje 49
         obj.tag = tagName;
         foreach (Renderer rend in children)
         {
