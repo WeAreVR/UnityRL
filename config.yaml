@@ -19,7 +19,7 @@ behaviors:
       extrinsic:
         gamma: 0.99
         strength: 1.0
-      curiosity:
+      curiosity:  
         gamma: 0.99
         strength: 0.02
         network_settings:

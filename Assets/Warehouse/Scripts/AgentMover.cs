@@ -22,6 +22,8 @@ public class AgentMover : Agent
     public bool gotPackage;
     public int whichPackage;
     private int numberOfVectorsInTablesWithPair;
+    public GameObject m_enviroment;
+    public GameObject otherAgent;
 
     public GameObject tableTargetPrefab;
     public Material changeMaterial;
@@ -37,6 +39,7 @@ public class AgentMover : Agent
     public Material winMaterial;
     public Material LoseMaterial;
     public int steps;
+    public Transform spawnobj;
     //public GameObject plane;
 
     void FixedUpdate()
@@ -73,7 +76,7 @@ public class AgentMover : Agent
         //3 for transform og 2 for de andre
         //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         //m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
-        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize =  8;
         //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
@@ -103,7 +106,6 @@ public class AgentMover : Agent
 
 
     }
-
     public override void OnEpisodeBegin()
     {
         //Package on top of the agent
@@ -115,7 +117,7 @@ public class AgentMover : Agent
         //ClearAndDestoryList(listOfTables);
         //Instantiate all the tables
         m_SpawnTable.SpawnTables();
-
+        transform.localPosition = spawnobj.GetChild(Random.Range(0, 12)).transform.localPosition;
         
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
@@ -129,7 +131,7 @@ public class AgentMover : Agent
         //_controller.transform.position = plane.transform.position;
         //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
         //_controller.enabled = true;
-        transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
+        //transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
         transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
         //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -155,6 +157,7 @@ public class AgentMover : Agent
         sensor.AddObservation(transform.InverseTransformDirection(m_AgentRb.velocity));
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
+        sensor.AddObservation(otherAgent.transform.localPosition);
 
         //for (int i = 0; i < listOfTablesWithPackge.Count; i++)
         //{
@@ -200,7 +203,8 @@ public class AgentMover : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //steps++;
-        AddReward(-1f / MaxStep);
+        m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(-1f/MaxStep);
+        //AddReward(-1f / MaxStep);
         MoveAgent(actionBuffers.DiscreteActions);
 
     }
@@ -274,15 +278,22 @@ public class AgentMover : Agent
         if (other.tag == "TablePackage" && gotPackage == false)
         {
             tableTargetPrefab = other.gameObject;
-            AddReward(0.5f);
+            tableTargetPrefab.tag = "wall";
+            m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(0.5f);
+            //AddReward(0.5f);
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
             //super trashy m�de at g�re det p� f�ler jeg men det virker
             GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
+          
+            setActivatePackage.GetComponent<Renderer>().material.CopyPropertiesFromMaterial(other.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material);
             gotPackage = true;
-            setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
+            settings.RemoveMat(tableTargetPrefab);
+            //changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
+            //gotPackage = true;
+            //setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
         }
 
 
@@ -291,7 +302,8 @@ public class AgentMover : Agent
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
                 steps = 0;
-                AddReward(1f);
+                m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(1f);
+                //AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
                 winIndicator.GetComponent<MeshRenderer>().material = winMaterial;

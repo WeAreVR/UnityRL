@@ -1,0 +1,29 @@
+{
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.12.1+cu116"
+    },
+    "MoveToTables": {
+        "checkpoints": [
+            {
+                "steps": 498090,
+                "file_path": "results\\enagenttest\\MoveToTables\\MoveToTables-498090.onnx",
+                "reward": null,
+                "creation_time": 1670850942.1875844,
+                "auxillary_file_paths": [
+                    "results\\enagenttest\\MoveToTables\\MoveToTables-498090.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 498090,
+            "file_path": "results\\enagenttest\\MoveToTables.onnx",
+            "reward": null,
+            "creation_time": 1670850942.1875844,
+            "auxillary_file_paths": [
+                "results\\enagenttest\\MoveToTables\\MoveToTables-498090.pt"
+            ]
+        }
+    }
+}
