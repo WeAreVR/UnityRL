@@ -1795,17 +1795,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2015531263391513216}
     m_Modifications:
-    - target: {fileID: 1338053808473307307, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2457644688087795385, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_Center.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2457644688087795385, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2463313584326214896, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: plane
@@ -1823,14 +1819,6 @@ PrefabInstance:
       propertyPath: winIndicator
       value: 
       objectReference: {fileID: 5587204883307130214}
-    - target: {fileID: 2634530308560712173, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2849256132618858192, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3003543187234788202, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.75
@@ -1898,10 +1886,6 @@ PrefabInstance:
     - target: {fileID: 4757686713584108506, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_InferenceDevice
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5052948317989812534, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6081727517736060530, guid: 21c0a0f0819c5194f916b90523d72a68, type: 3}
       propertyPath: m_LocalPosition.y
