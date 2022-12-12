@@ -42,10 +42,10 @@ public class EnvironmentController : MonoBehaviour
         if (settings.packages.Count == 0)
         {
             Debug.Log("STTTTOOOOÅP");
-            m_AgentGroup.EndGroupEpisode();
+            m_AgentGroup.GroupEpisodeInterrupted();
             ResetScene();
         }
-        m_AgentGroup.AddGroupReward(-1f / MaxEnvironmentSteps);
+        m_AgentGroup.AddGroupReward(-0.5f / MaxEnvironmentSteps);
 
     }
 
@@ -94,12 +94,10 @@ public class EnvironmentController : MonoBehaviour
         settings.SpawnTables();
         LoadSpawnPoints();
         
-
         foreach (var item in AgentsList)
         {
             ResetPosition(item.gameObject);
         }
-        
 
 
     }
@@ -113,10 +111,7 @@ public class EnvironmentController : MonoBehaviour
         obj.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         AgentSpawnPoints.RemoveAt(randomNumber);
         obj.GetComponent<AgentMover>().setActivatePackage.SetActive(false);
-        obj.GetComponent<AgentMover>().gotPackage = false;
-        obj.GetComponent<AgentMover>().whichPackage = -1;
-
-
+    
     }
 
 }
