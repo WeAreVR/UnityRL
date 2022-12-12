@@ -35,23 +35,17 @@ public class EnvironmentController : MonoBehaviour
         m_ResetTimer += 1;
         if (m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0)
         {
-            //m_AgentGroup.GroupEpisodeInterrupted();
+            m_AgentGroup.GroupEpisodeInterrupted();
             ResetScene();
         }
         //Hurry Up Penalty
         if (settings.packages.Count == 0)
         {
-            
-            //m_AgentGroup.EndGroupEpisode();
-            foreach(var agent in AgentsList)
-            {
-                agent.EndEpisode();
-
-            }
+            Debug.Log("STTTTOOOOÅP");
+            m_AgentGroup.EndGroupEpisode();
             ResetScene();
         }
-        //m_AgentGroup.AddGroupReward(-1f / MaxEnvironmentSteps);
-        AddReward((-1f / MaxEnvironmentSteps));
+        m_AgentGroup.AddGroupReward(-1f / MaxEnvironmentSteps);
 
     }
 
@@ -75,7 +69,6 @@ public class EnvironmentController : MonoBehaviour
 
         settings = transform.GetComponent<SpawnTable>();
         
-        /*
         //en agent
         m_AgentGroup = new SimpleMultiAgentGroup();
 
@@ -83,7 +76,7 @@ public class EnvironmentController : MonoBehaviour
         {
             m_AgentGroup.RegisterAgent(item);
         }
-        */
+
         ResetScene();
 
     }
@@ -125,15 +118,6 @@ public class EnvironmentController : MonoBehaviour
         obj.GetComponent<AgentMover>().gotPackage = false;
         obj.GetComponent<AgentMover>().whichPackage = -1;
 
-
-    }
-
-    public void AddReward(float reward)
-    {   
-        foreach (Agent agent in AgentsList)
-        {
-            agent.AddReward(reward);
-        }
 
     }
 

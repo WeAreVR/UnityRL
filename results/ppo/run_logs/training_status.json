@@ -1,4 +1,26 @@
 {
+    "PushBlockCollab": {
+        "checkpoints": [
+            {
+                "steps": 126144,
+                "file_path": "results\\ppo\\PushBlockCollab\\PushBlockCollab-126144.onnx",
+                "reward": null,
+                "creation_time": 1670678499.031588,
+                "auxillary_file_paths": [
+                    "results\\ppo\\PushBlockCollab\\PushBlockCollab-126144.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 126144,
+            "file_path": "results\\ppo\\PushBlockCollab.onnx",
+            "reward": null,
+            "creation_time": 1670678499.031588,
+            "auxillary_file_paths": [
+                "results\\ppo\\PushBlockCollab\\PushBlockCollab-126144.pt"
+            ]
+        }
+    },
     "metadata": {
         "stats_format_version": "0.3.0",
         "mlagents_version": "0.30.0",
