@@ -27,7 +27,7 @@ public class EnvironmentController : MonoBehaviour
     public List<GameObject> AgentSpawnPoints = new List<GameObject>();
     private EnvironmentSettings m_EnvironmentSettings;
     private int m_ResetTimer;
-    public int MaxEnvironmentSteps = 25000;
+    [Header("Max Environment Steps")] public int MaxEnvironmentSteps = 25000;
 
 
     void FixedUpdate()
@@ -68,8 +68,6 @@ public class EnvironmentController : MonoBehaviour
 
 
         settings = transform.GetComponent<SpawnTable>();
-        
-        //en agent
         m_AgentGroup = new SimpleMultiAgentGroup();
 
         foreach (var item in AgentsList)

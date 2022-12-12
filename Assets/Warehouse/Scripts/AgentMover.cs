@@ -76,8 +76,7 @@ public class AgentMover : Agent
         //3 for transform og 2 for de andre
         //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         //m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
-
-        m_BehaviorParameters.BrainParameters.VectorObservationSize = 2 + 9;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5;
         //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
@@ -156,11 +155,6 @@ public class AgentMover : Agent
         //sensor.AddObservation(transform.localPosition.x);
         //sensor.AddObservation(transform.localPosition.z);
         //sensor.AddObservation(transform.rotation.z);
-        for (int i = 0; i < m_EnvironmentController.AgentsList.Count; i++)
-        {
-            sensor.AddObservation(m_EnvironmentController.AgentsList[i].gameObject.transform.position);
-        }
-
         sensor.AddObservation(transform.InverseTransformDirection(m_AgentRb.velocity));
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
@@ -307,7 +301,6 @@ public class AgentMover : Agent
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
                 steps = 0;
-                
                 m_EnvironmentController.m_AgentGroup.AddGroupReward(1f);
                 //AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
