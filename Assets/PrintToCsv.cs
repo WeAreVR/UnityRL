@@ -13,7 +13,11 @@ public class PrintToCsv : MonoBehaviour
 {
     public List<int> list = new List<int>();
     public GameObject obj;
-
+    private void Awake()
+    {
+        //find object with name
+        obj = GameObject.Find("Agent");
+    }
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))

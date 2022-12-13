@@ -15,4 +15,5 @@ public class EnvironmentSettings : MonoBehaviour
 
     //Number of agents that should spawn
     public int numberOfAgents = 1;
+   
 }

@@ -7,6 +7,8 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Policies;
 using System.Threading;
 using Unity.VisualScripting;
+using System;
+using Random = UnityEngine.Random;
 
 public class AgentMover : Agent
 {
@@ -34,10 +36,13 @@ public class AgentMover : Agent
     public int agentSpeed = 1;
     public GameObject plane;
     public RayPerceptionOutput.RayOutput[] RayOutputs;
-    public GameObject winIndicator;
     public Material winMaterial;
     public Material LoseMaterial;
     public int steps;
+    public Transform spawnPoint;
+    public GameObject[] prefabs;
+    private GameObject envPrefab;
+
     //public GameObject plane;
 
     void FixedUpdate()
@@ -50,6 +55,8 @@ public class AgentMover : Agent
 
     public override void Initialize()
     {
+        prefabs = Resources.LoadAll<GameObject>("Prefabs");
+
         // _controller = gameObject.GetComponent<CharacterController>();
         // _controller.center = new Vector3(0, 2.5f, 0);
         //m_BufferSensor = GetComponent<BufferSensorComponent>();
@@ -58,7 +65,7 @@ public class AgentMover : Agent
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_BehaviorParameters = gameObject.transform.GetComponent<BehaviorParameters>();
         //m_SpawnTable = FindObjectOfType<SpawnTable>();
-        settings = transform.root.GetComponent<SpawnTable>();
+        //settings = transform.root.GetComponent<SpawnTable>();
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
         //Get back with smart way to do this
         //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
@@ -101,11 +108,16 @@ public class AgentMover : Agent
 
     public override void OnEpisodeBegin()
     {
+        Destroy(envPrefab);
         if (steps != 0)
         {
             timePerEpoch.Add(steps);
         }
         steps = 0;
+        Debug.Log("new beginnings");
+        var randomEnv = Random.Range(0, prefabs.Length);
+        envPrefab = Instantiate(prefabs[randomEnv], transform.root.position, Quaternion.Euler(0, 0, 0));
+        spawnPoint = envPrefab.transform.Find("Spawnpoint");
 
         //Package on top of the agent
         setActivatePackage.SetActive(false);
@@ -115,14 +127,15 @@ public class AgentMover : Agent
         //ClearAndDestoryList(listOfTablesWithPackge);
         //ClearAndDestoryList(listOfTables);
         //Instantiate all the tables
-        m_SpawnTable.SpawnTables();
+        settings = FindObjectsOfType<SpawnTable>()[0];
+        settings.SpawnTables();
 
         
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
         listOfTablesWithPackge = settings.packages;
         ports = settings.ports;
-        
+
         //trashy way to make sure tables are spawned before adding them to the list 
         //Invoke("addToList", 0.2f);
         //_controller.enabled = false;
@@ -130,7 +143,8 @@ public class AgentMover : Agent
         //_controller.transform.position = plane.transform.position;
         //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
         //_controller.enabled = true;
-        transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
+        // transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
+        transform.localPosition = spawnPoint.transform.GetChild(Random.Range(0, spawnPoint.transform.childCount)).transform.localPosition;
         transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
         //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -268,12 +282,12 @@ public class AgentMover : Agent
 
         if (other.tag == "wall" || other.tag == "Agent")
         {
-            Debug.Log("Bad robot");
             //AddReward(-0.1f);
             //EndEpisode();
         }
         if (other.tag == "TablePackage" && gotPackage == false)
         {
+            Debug.Log("Got package");
             tableTargetPrefab = other.gameObject;
             AddReward(0.5f);
             setActivatePackage.SetActive(true);
@@ -283,8 +297,8 @@ public class AgentMover : Agent
             GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
             gotPackage = true;
-            setActivatePackage.GetComponent<Renderer>().material = changeMaterial;
-            m_SpawnTable.RemoveMat(tableTargetPrefab);
+            setActivatePackage.GetComponent<Renderer>().material.CopyPropertiesFromMaterial(other.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material);
+            settings.RemoveMat(tableTargetPrefab);
         }
 
 
@@ -292,11 +306,11 @@ public class AgentMover : Agent
         {
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
-               
+                Debug.Log("Package delivered");
+
                 AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
-                winIndicator.GetComponent<MeshRenderer>().material = winMaterial;
                 /*
                 //virker ikke fjener ikke fra liste
                 listOfTablesWithPackge.Remove(other.gameObject);

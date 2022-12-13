@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using static Unity.VisualScripting.Metadata;
+using Random = UnityEngine.Random;
 
 public class SpawnTable : MonoBehaviour
 {
@@ -16,6 +19,7 @@ public class SpawnTable : MonoBehaviour
     public List<GameObject> packages = new List<GameObject>();
     public List<GameObject> ports = new List<GameObject>();
     public List<GameObject> rows = new List<GameObject>();
+    public List<GameObject> maps = new List<GameObject>();
     public GameObject row;
     public Material[] randomMaterials;
     //public List<Material> copyOfMaterial = new List<Material>();
@@ -34,11 +38,12 @@ public class SpawnTable : MonoBehaviour
     {
         //Need to be placed under Resources/ "Will try to find a workaround
          randomMaterials = Resources.LoadAll("Materials", typeof(Material)).Cast<Material>().ToArray();
+
     }
 
-   
 
-  
+
+
     /*public void RandomDeliverySite()
     {
 
