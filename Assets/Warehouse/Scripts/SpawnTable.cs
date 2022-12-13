@@ -20,7 +20,10 @@ public class SpawnTable : MonoBehaviour
     public Material[] randomMaterials;
     //public List<Material> copyOfMaterial = new List<Material>();
     public Dictionary<Material, int> dict =
-            new Dictionary<Material, int>();
+    new Dictionary<Material, int>();
+
+    public Transform spawnobj;
+
 
 
     public GameObject port;

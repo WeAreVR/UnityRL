@@ -7,6 +7,8 @@ using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Policies;
 using System.Threading;
 using Unity.VisualScripting;
+using System;
+using Random = UnityEngine.Random;
 
 public class AgentMover : Agent
 {
@@ -38,8 +40,10 @@ public class AgentMover : Agent
     public GameObject winIndicator;
     public Material winMaterial;
     public Material LoseMaterial;
-    public int steps;
-    public Transform spawnobj;
+    [SerializeField] private int steps;
+    //public Transform spawnobj;
+    public List<Transform> AgentSpawnPoints = new List<Transform>();
+    public List<int> timePerEpoch = new List<int>();
     //public GameObject plane;
 
     void FixedUpdate()
@@ -48,12 +52,20 @@ public class AgentMover : Agent
         steps++;
         if ( steps % MaxStep == 0)
         {
-            winIndicator.GetComponent<MeshRenderer>().material = LoseMaterial;
-            steps = 0;
+            //timePerEpoch.Add(steps);
+            //winIndicator.GetComponent<MeshRenderer>().material = LoseMaterial;
             //EndEpisode();
             //Debug.Log(Academy.Instance.StepCount);
         }
-        
+
+    }
+    void GetSpawnPoints()
+    {
+        for (int i = 0; i < settings.spawnobj.transform.childCount; i++)
+        {
+            AgentSpawnPoints.Add(settings.spawnobj.transform.GetChild(i));
+        }
+
     }
 
     public override void Initialize()
@@ -76,7 +88,7 @@ public class AgentMover : Agent
         //3 for transform og 2 for de andre
         //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         //m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
-        m_BehaviorParameters.BrainParameters.VectorObservationSize =  8;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5;
         //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
 
         //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
@@ -109,6 +121,12 @@ public class AgentMover : Agent
     public override void OnEpisodeBegin()
     {
         //Package on top of the agent
+        if(steps != 0) 
+        {
+            timePerEpoch.Add(steps);
+        }
+        steps = 0;
+    
         setActivatePackage.SetActive(false);
         m_AgentRb.velocity = Vector3.zero;
         m_AgentRb.angularVelocity = Vector3.zero;
@@ -117,8 +135,9 @@ public class AgentMover : Agent
         //ClearAndDestoryList(listOfTables);
         //Instantiate all the tables
         m_SpawnTable.SpawnTables();
-        transform.localPosition = spawnobj.GetChild(Random.Range(0, 12)).transform.localPosition;
-        
+        //transform.localPosition = settings.spawnobj.GetChild(Random.Range(0, settings.spawnobj.childCount)).transform.localPosition;
+        //transform.localPosition = settings.transform.localPosition + new Vector3(5f, 0.5f, 0.0f);
+
         //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables
         listOfTables = settings.tables;
         listOfTablesWithPackge = settings.packages;
@@ -131,7 +150,7 @@ public class AgentMover : Agent
         //_controller.transform.position = plane.transform.position;
         //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
         //_controller.enabled = true;
-        //transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
+        transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
         transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
         //GetComponent<Rigidbody>().velocity = Vector3.zero;
         //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
@@ -157,7 +176,7 @@ public class AgentMover : Agent
         sensor.AddObservation(transform.InverseTransformDirection(m_AgentRb.velocity));
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
-        sensor.AddObservation(otherAgent.transform.localPosition);
+        //sensor.AddObservation(otherAgent.transform.localPosition);
 
         //for (int i = 0; i < listOfTablesWithPackge.Count; i++)
         //{
@@ -203,8 +222,8 @@ public class AgentMover : Agent
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
         //steps++;
-        m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(-1f/MaxStep);
-        //AddReward(-1f / MaxStep);
+        //m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(-1f/MaxStep);
+        AddReward(-1f / MaxStep);
         MoveAgent(actionBuffers.DiscreteActions);
 
     }
@@ -279,8 +298,8 @@ public class AgentMover : Agent
         {
             tableTargetPrefab = other.gameObject;
             tableTargetPrefab.tag = "wall";
-            m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(0.5f);
-            //AddReward(0.5f);
+            //m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(0.5f);
+            AddReward(0.5f);
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
             //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
@@ -301,9 +320,9 @@ public class AgentMover : Agent
         {
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
-                steps = 0;
-                m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(1f);
-                //AddReward(1f);
+                //steps = 0;
+                //m_enviroment.GetComponent<EnvironmentController>().addGlobalRewards(1f);
+                AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
                 winIndicator.GetComponent<MeshRenderer>().material = winMaterial;
@@ -326,6 +345,7 @@ public class AgentMover : Agent
                 if (listOfTablesWithPackge.Count == 0)
                 {
                     EndEpisode();
+                    
                 }
             }
         }
