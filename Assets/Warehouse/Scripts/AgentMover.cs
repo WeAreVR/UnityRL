@@ -28,6 +28,7 @@ public class AgentMover : Agent
     private List<GameObject> listOfTables = new List<GameObject>();
     private List<GameObject> listOfTablesWithPackge = new List<GameObject>();
     private List<GameObject> ports = new List<GameObject>();
+    public List<int> timePerEpoch = new List<int>();
     private SpawnTable settings;
     private bool isColliding = false;
     public int agentSpeed = 1;
@@ -43,13 +44,7 @@ public class AgentMover : Agent
     {
         isColliding = false;
         steps++;
-        if ( steps % MaxStep == 0)
-        {
-            winIndicator.GetComponent<MeshRenderer>().material = LoseMaterial;
-            steps = 0;
-            //EndEpisode();
-            //Debug.Log(Academy.Instance.StepCount);
-        }
+      
         
     }
 
@@ -106,6 +101,12 @@ public class AgentMover : Agent
 
     public override void OnEpisodeBegin()
     {
+        if (steps != 0)
+        {
+            timePerEpoch.Add(steps);
+        }
+        steps = 0;
+
         //Package on top of the agent
         setActivatePackage.SetActive(false);
         m_AgentRb.velocity = Vector3.zero;
@@ -291,7 +292,7 @@ public class AgentMover : Agent
         {
             if (other.GetComponent<TableCollisonCheck>().packageNumber == whichPackage)
             {
-                steps = 0;
+               
                 AddReward(1f);
                 //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
