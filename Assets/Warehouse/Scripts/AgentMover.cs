@@ -111,7 +111,7 @@ public class AgentMover : Agent
         Destroy(envPrefab);
         if (steps != 0)
         {
-            timePerEpoch.Add(steps);
+            //timePerEpoch.Add(steps);
         }
         steps = 0;
         Debug.Log("new beginnings");

@@ -1,4 +1,62 @@
 {
+    "MoveToTables": {
+        "checkpoints": [
+            {
+                "steps": 27499973,
+                "file_path": "results\\randomEnv\\MoveToTables\\MoveToTables-27499973.onnx",
+                "reward": 2.634400248527527,
+                "creation_time": 1671105266.9901767,
+                "auxillary_file_paths": [
+                    "results\\randomEnv\\MoveToTables\\MoveToTables-27499973.pt"
+                ]
+            },
+            {
+                "steps": 27999938,
+                "file_path": "results\\randomEnv\\MoveToTables\\MoveToTables-27999938.onnx",
+                "reward": 2.5894671181837716,
+                "creation_time": 1671106393.8510249,
+                "auxillary_file_paths": [
+                    "results\\randomEnv\\MoveToTables\\MoveToTables-27999938.pt"
+                ]
+            },
+            {
+                "steps": 28499873,
+                "file_path": "results\\randomEnv\\MoveToTables\\MoveToTables-28499873.onnx",
+                "reward": 2.528250265866518,
+                "creation_time": 1671107460.6627967,
+                "auxillary_file_paths": [
+                    "results\\randomEnv\\MoveToTables\\MoveToTables-28499873.pt"
+                ]
+            },
+            {
+                "steps": 28999899,
+                "file_path": "results\\randomEnv\\MoveToTables\\MoveToTables-28999899.onnx",
+                "reward": null,
+                "creation_time": 1671108529.6268,
+                "auxillary_file_paths": [
+                    "results\\randomEnv\\MoveToTables\\MoveToTables-28999899.pt"
+                ]
+            },
+            {
+                "steps": 29300242,
+                "file_path": "results\\randomEnv\\MoveToTables\\MoveToTables-29300242.onnx",
+                "reward": null,
+                "creation_time": 1671109187.7623353,
+                "auxillary_file_paths": [
+                    "results\\randomEnv\\MoveToTables\\MoveToTables-29300242.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 29300242,
+            "file_path": "results\\randomEnv\\MoveToTables.onnx",
+            "reward": null,
+            "creation_time": 1671109187.7623353,
+            "auxillary_file_paths": [
+                "results\\randomEnv\\MoveToTables\\MoveToTables-29300242.pt"
+            ]
+        }
+    },
     "metadata": {
         "stats_format_version": "0.3.0",
         "mlagents_version": "0.30.0",

@@ -34,22 +34,6 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-      gail:
-        gamma: 0.99
-        strength: 0.01
-        network_settings:
-          normalize: false
-          hidden_units: 128
-          num_layers: 2
-          vis_encode_type: simple
-          memory: null
-          goal_conditioning_type: hyper
-          deterministic: false
-        learning_rate: 0.0003
-        encoding_size: null
-        use_actions: false
-        use_vail: false
-        demo_path: Demos/TestNewSensor_1.demo
       curiosity:
         gamma: 0.99
         strength: 0.02
@@ -66,7 +50,7 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
-    max_steps: 10000000
+    max_steps: 30000000
     time_horizon: 128
     summary_freq: 30000
     threaded: false
@@ -95,8 +79,8 @@ checkpoint_settings:
   run_id: randomEnv
   initialize_from: null
   load_model: false
-  resume: false
-  force: true
+  resume: true
+  force: false
   train_model: false
   inference: false
   results_dir: results
