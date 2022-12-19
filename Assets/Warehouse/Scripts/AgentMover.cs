@@ -9,6 +9,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using System;
 using Random = UnityEngine.Random;
+using System.Linq;
 
 public class AgentMover : Agent
 {
@@ -42,6 +43,8 @@ public class AgentMover : Agent
     public Transform spawnPoint;
     public GameObject[] prefabs;
     private GameObject envPrefab;
+    private int numberToRun = 0;
+    private int numberToRun2 = 0;
 
     //public GameObject plane;
 
@@ -49,38 +52,25 @@ public class AgentMover : Agent
     {
         isColliding = false;
         steps++;
-      
-        
+
+
     }
 
     public override void Initialize()
     {
         prefabs = Resources.LoadAll<GameObject>("Prefabs");
 
-        // _controller = gameObject.GetComponent<CharacterController>();
-        // _controller.center = new Vector3(0, 2.5f, 0);
         //m_BufferSensor = GetComponent<BufferSensorComponent>();
         m_AgentRb = GetComponent<Rigidbody>();
         gotPackage = false;
         m_EnvironmentSettings = FindObjectOfType<EnvironmentSettings>();
         m_BehaviorParameters = gameObject.transform.GetComponent<BehaviorParameters>();
-        //m_SpawnTable = FindObjectOfType<SpawnTable>();
-        //settings = transform.root.GetComponent<SpawnTable>();
-        //listOfTables = new List<GameObject>(settings.GetComponent<SpawnTable>().tables);
-        //Get back with smart way to do this
-        //vi får lidt fejl indtil videre fordi vi fjener fra listen så der er færre obsevationer end objecter, men det vil løse sig selv hvis vi adder borde når et bliver fjernet
-        //Overstående er fixed men beholder kommentar fordi vi skal add borde
-        //
-
+        
         //3 for transform og 2 for de andre
         //numberOfVectorsInTablesWithPair = (m_EnvironmentSettings.numberOfTables * 2) + 8;
         //m_BehaviorParameters.BrainParameters.VectorObservationSize =  5+8;
-        m_BehaviorParameters.BrainParameters.VectorObservationSize =  5;
+        m_BehaviorParameters.BrainParameters.VectorObservationSize = 5;
         //m_BufferSensor.MaxNumObservables = (settings.rows.Count*2);
-
-        //listOfTablesWithPackge.Add(table.GetComponent<SpawnPackage>().tableSpawned);
-        //Delay because it tables are not spawned yet
-        //Invoke("addToList",0.5f);
 
     }
     void addToList()
@@ -95,9 +85,6 @@ public class AgentMover : Agent
         whichPackage = FindObjectOfType<TableCollisonCheck>().packageNumber;
         gotPackage = true;
 
-        //Denne her linje vil skabe problemer fordi vi kun har 1 bord
-        //ClearAndDestoryList(listOfTablesWithPackge);
-        
         setActivatePackage.SetActive(true);
 
         var mat = FindObjectOfType<TableCollisonCheck>().transform.GetChild(0).GetComponent<Renderer>().material;
@@ -111,14 +98,15 @@ public class AgentMover : Agent
         Destroy(envPrefab);
         if (steps != 0)
         {
-            //timePerEpoch.Add(steps);
+            timePerEpoch.Add(steps);
         }
+
         steps = 0;
-        Debug.Log("new beginnings");
+        //if (numberToRun2 % 10 == 0 && numberToRun2 != 0 && numberToRun !=prefabs.Length) numberToRun++;
         var randomEnv = Random.Range(0, prefabs.Length);
         envPrefab = Instantiate(prefabs[randomEnv], transform.root.position, Quaternion.Euler(0, 0, 0));
         spawnPoint = envPrefab.transform.Find("Spawnpoint");
-
+        numberToRun2++;
         //Package on top of the agent
         setActivatePackage.SetActive(false);
         m_AgentRb.velocity = Vector3.zero;
@@ -135,21 +123,8 @@ public class AgentMover : Agent
         listOfTables = settings.tables;
         listOfTablesWithPackge = settings.packages;
         ports = settings.ports;
-
-        //trashy way to make sure tables are spawned before adding them to the list 
-        //Invoke("addToList", 0.2f);
-        //_controller.enabled = false;
-        //_controller.transform.position = plane.transform.position;
-        //_controller.transform.position = plane.transform.position;
-        //_controller.transform.rotation = Quaternion.Euler(new Vector3(0, 180, -10));
-        //_controller.enabled = true;
-        // transform.localPosition = plane.transform.localPosition + new Vector3(5,0.5f,0);
         transform.localPosition = spawnPoint.transform.GetChild(Random.Range(0, spawnPoint.transform.childCount)).transform.localPosition;
         transform.localRotation = Quaternion.Euler(new Vector3(0, 180, 0));
-        //GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        //targetTransform.localPosition = new Vector3(Random.Range(-1f, 5f), 0, Random.Range(4.2f, +7.7f));
-        //targetTransform.localPosition = new Vector3(0, 2, -2);
         gotPackage = false;
         whichPackage = -1;
         
@@ -162,51 +137,9 @@ public class AgentMover : Agent
     }
     public override void CollectObservations(VectorSensor sensor)
     {
-        //mlagent sorter kan måske være relevant
-        // BufferSensorComponent.AppendObservation(5.0f);
-        //sensor.AddObservation(transform.localPosition.x);
-        //sensor.AddObservation(transform.localPosition.z);
-        //sensor.AddObservation(transform.rotation.z);
         sensor.AddObservation(transform.InverseTransformDirection(m_AgentRb.velocity));
         sensor.AddObservation(gotPackage);
         sensor.AddObservation(whichPackage);
-
-        //for (int i = 0; i < listOfTablesWithPackge.Count; i++)
-        //{
-        //    /* No need for y since it is never used i think
-        //    sensor.AddObservation(listOfTablesWithPackge[i].transform.position.x);
-        //    sensor.AddObservation(listOfTablesWithPackge[i].transform.position.z);
-        //    sensor.AddObservation(listOfTables[i].transform.position.x);
-        //    sensor.AddObservation(listOfTables[i].transform.position.z);
-        //    */
-
-        //    var dirToPackage = (listOfTablesWithPackge[i].transform.localPosition - transform.localPosition).normalized;
-        //    //kig på det her 
-
-        //    //sensor.AddObservation(listOfTables[i].transform.localPosition);
-        //    //sensor.AddObservation(listOfTablesWithPackge[i].transform.localPosition);
-
-        //    //sensor.AddObservation(dirToPackage.x);
-        //    //sensor.AddObservation(dirToPackage.z);
-        //    float[] packageObservation = new float[]
-        //    {
-        //        dirToPackage.x,
-        //        dirToPackage.z
-        //    };
-
-        //    m_BufferSensor.AppendObservation(packageObservation);
-        //}
-        ////m_BufferSensor.AppendObservation(dirToPackage.x);
-        //for (int i = 0; i < ports.Count; i++)
-        //{
-
-        //    var dirToPort = (ports[i].transform.localPosition - transform.localPosition).normalized;
-
-        //    sensor.AddObservation(dirToPort.x);
-        //    sensor.AddObservation(dirToPort.z);
-
-        //}
-
     }
     
         
@@ -219,39 +152,8 @@ public class AgentMover : Agent
         MoveAgent(actionBuffers.DiscreteActions);
 
     }
-    //public override void heuristic(in actionbuffers actionsout)
-    //{
-    //    var discreteactionsout = actionsout.discreteactions;
 
-    //    if (input.getkey(keycode.w))
-    //    {
-    //        //debug.log(rayoutputs);
-    //        discreteactionsout[0] = 1;
-    //    }
-    //    else if (input.getkey(keycode.s))
-    //    {
-    //        discreteactionsout[0] = 2;
-    //    }
-    //    if (input.getkey(keycode.d))
-    //    {
-    //        discreteactionsout[1] = 2;
-    //    }
-    //    else if (input.getkey(keycode.a))
-    //    {
-    //        discreteactionsout[1] = 1;
-    //    }
-
-    //    /*
-    //    else if (input.getkey(keycode.q))
-    //    {
-    //        discreteactionsout[0] = 3;
-    //    }
-    //    else if (input.getkey(keycode.e))
-    //    {
-    //        discreteactionsout[0] = 4;
-    //    }
-    //    */
-    //}
+    
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
@@ -278,7 +180,6 @@ public class AgentMover : Agent
     {
         if (isColliding) return;
         isColliding = true;
-        //Transform firstChild = other.transform.GetChild(0);
 
         if (other.tag == "wall" || other.tag == "Agent")
         {
@@ -292,8 +193,6 @@ public class AgentMover : Agent
             AddReward(0.5f);
             setActivatePackage.SetActive(true);
             whichPackage = other.GetComponent<TableCollisonCheck>().packageNumber;
-            //changeMaterial = other.GetComponentsInChildren<MeshRenderer>().material;
-            //super trashy m�de at g�re det p� f�ler jeg men det virker
             GameObject childGameObject1 = other.transform.GetChild(0).gameObject;
             changeMaterial = childGameObject1.GetComponent<MeshRenderer>().material;
             gotPackage = true;
@@ -309,21 +208,13 @@ public class AgentMover : Agent
                 Debug.Log("Package delivered");
 
                 AddReward(1f);
-                //whichPackage = other.GetComponent<SpawnPackage>().randomMaterials.Length+1;
                 whichPackage = -1;
-                /*
-                //virker ikke fjener ikke fra liste
-                listOfTablesWithPackge.Remove(other.gameObject);
-                listOfTables.Remove(tableTargetPrefab);
-                */
+                
+                
                 //RemoveAt virker 
                 RemoveFromList(listOfTables, other.gameObject);
                 RemoveFromList(listOfTablesWithPackge, tableTargetPrefab);
 
-                // other.GetComponent<TableCollisonCheck>().ItemDelivered(tableTargetPrefab);
-                // other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject);
-                //other.GetComponent<TableCollisonCheck>().ItemDelivered(other.gameObject, tableTargetPrefab);
-                //m_SpawnTable.ItemDelivered(other.gameObject);
                 gotPackage = false;
                 setActivatePackage.SetActive(false);
                 if (listOfTablesWithPackge.Count == 0)
@@ -334,45 +225,7 @@ public class AgentMover : Agent
         }
 
     }
-    /*public void MoveAgent(ActionSegment<int> act)
-    {
-        
-        var dirToGo = Vector3.zero;
-        var rotateDir = Vector3.zero;
-
-        var action = act[0];
-        var action1 = act[1];
-
-        //testede det her og det virkede ikke s�rlig godt, men det ville nok v�re det rigtige at bruge se om vi kan g�re bedre
-        //skal den kunne rotate up?
-        switch (action)
-        {
-            case 1:
-                _controller.Move(transform.forward*m_EnvironmentSettings.agentRunSpeed);
-                //dirToGo = transform.forward * 1f;
-                break;
-            case 2:
-                _controller.Move(transform.forward * (m_EnvironmentSettings.agentRunSpeed * -1));
-                break;
-        }
-        switch (action1)
-        {
-            case 1:
-                // _controller.Move(transform.forward * m_EnvironmentSettings.agentRunSpeed);
-                //dirToGo = transform.forward * 1f;
-                _controller.transform.Rotate(0, -m_EnvironmentSettings.agentRotationSpeed, 0);
-                break;
-            case 2:
-                //_controller.Move(transform.forward * (m_EnvironmentSettings.agentRunSpeed * -1));
-                _controller.transform.Rotate(0, m_EnvironmentSettings.agentRotationSpeed, 0);
-                break;
-        }
-        //transform.Rotate(rotateDir, Time.fixedDeltaTime * 200f);
-        //m_AgentRb.AddForce(dirToGo * m_EnvironmentSettings.agentRunSpeed,
-        //  ForceMode.VelocityChange);
-
-    }
-    */
+    
     public void MoveAgent(ActionSegment<int> act)
     {
         var dirToGo = Vector3.zero;

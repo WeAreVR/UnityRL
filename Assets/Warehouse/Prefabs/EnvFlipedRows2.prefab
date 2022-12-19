@@ -1382,7 +1382,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2128bdfbf42e30546a48c1b269df6d8a, type: 2}
+  - {fileID: 2100000, guid: c0cceae9282eb8c4f9c39f5d7362e4d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1482,6 +1482,7 @@ MonoBehaviour:
   packages: []
   ports: []
   rows: []
+  maps: []
   row: {fileID: 8261600896886885307}
   randomMaterials: []
   port: {fileID: 6821363767677839299}
@@ -1494,14 +1495,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6821363768377583719}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b89b8edb8e404fa4ab09ac3d8883c165, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e11d827efdb57b4e9ec34a99523f3ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agents:
-  - {fileID: 6821363768802984136}
-  - {fileID: 1635167491849887433}
+  list: 
+  obj: {fileID: 0}
 --- !u!1 &6821363768739509834
 GameObject:
   m_ObjectHideFlags: 0

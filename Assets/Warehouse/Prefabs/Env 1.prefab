@@ -573,6 +573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8528414863986088860}
   - component: {fileID: 8528414863986088861}
+  - component: {fileID: 5004522998271808195}
   m_Layer: 0
   m_Name: Env 1
   m_TagString: Untagged
@@ -622,10 +623,26 @@ MonoBehaviour:
   packages: []
   ports: []
   rows: []
+  maps: []
   row: {fileID: 6509465252251121855}
+  randomMaterials: []
   port: {fileID: 8528414864655815879}
   numberOfTables: 0
   copiedList: []
+--- !u!114 &5004522998271808195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8528414863986088803}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e11d827efdb57b4e9ec34a99523f3ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  list: 
+  obj: {fileID: 0}
 --- !u!1 &8528414864364848462
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,7 +868,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2128bdfbf42e30546a48c1b269df6d8a, type: 2}
+  - {fileID: 2100000, guid: c0cceae9282eb8c4f9c39f5d7362e4d0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
